@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{1279d23c-74f8-4c4c-859d-475a6ab517ca}</ProjectGuid>
+    <RootNamespace>MyOpenGL</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Opengl</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(Platform)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)bin\int\$(Configuration)-$(Platform)\$(ProjectName)\</IntDir>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>imgui;Library\imgui;Library\glfw-3.3.7.bin.WIN32\include;Library\glad\include;Library\glm\glm;Library\glm;Library;src;imguizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion)_tmp.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>src;imguizmo;Library\imgui;Library\glfw-3.3.7.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>imgui;Library\imgui;Library\glfw-3.3.7.bin.WIN32\include;Library\glad\include;Library\glm\glm;Library\glm;Library;src;imguizmo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion)_tmp.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>src;imguizmo;Library\imgui;Library\glfw-3.3.7.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>Library\imgui;Library\glad\include;src;Library\glm\glm;Library\glm;imguizmo;imgui;Library\glfw-3.3.7.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion)_tmp.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>src;imguizmo;imgui;Library\glfw-3.3.7.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>Library\imgui;Library\glad\include;src;Library\glm\glm;Library\glm;imguizmo;imgui;Library\glfw-3.3.7.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion)_tmp.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>src;imguizmo;imgui;Library\glfw-3.3.7.bin.WIN32\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\CoreUtils.h" />
+    <ClInclude Include="Library\glad\include\glad\glad.h" />
+    <ClInclude Include="Library\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="src\Clouds.h" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\imstb_rectpack.h" />
+    <ClInclude Include="imgui\imstb_textedit.h" />
+    <ClInclude Include="imgui\imstb_truetype.h" />
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\Fbo.h" />
+    <ClInclude Include="src\FrameBuffer.h" />
+    <ClInclude Include="src\LightDirectional.h" />
+    <ClInclude Include="src\LightPoint.h" />
+    <ClInclude Include="src\LightSpot.h" />
+    <ClInclude Include="src\Material.h" />
+    <ClInclude Include="src\Mesh.h" />
+    <ClInclude Include="src\Model.h" />
+    <ClInclude Include="src\root_directory.h" />
+    <ClInclude Include="src\Shader.h" />
+    <ClInclude Include="src\ShaderList.h" />
+    <ClInclude Include="src\SkyBox.h" />
+    <ClInclude Include="src\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resources\back.png" />
+    <Image Include="resources\down.png" />
+    <Image Include="resources\font.png" />
+    <Image Include="resources\left.png" />
+    <Image Include="resources\right.png" />
+    <Image Include="resources\textures\Clouds\base_noise.tga" />
+    <Image Include="resources\textures\Clouds\noiseShape.tga" />
+    <Image Include="resources\textures\Clouds\perlinClouds.png" />
+    <Image Include="resources\textures\Clouds\weather.png" />
+    <Image Include="resources\textures\rustediron\rustediron2_basecolor.png" />
+    <Image Include="resources\textures\rustediron\rustediron2_metallic.png" />
+    <Image Include="resources\textures\rustediron\rustediron2_normal.png" />
+    <Image Include="resources\textures\rustediron\rustediron2_roughness.png" />
+    <Image Include="resources\textures\skyBox_back.png" />
+    <Image Include="resources\textures\skyBox_down.png" />
+    <Image Include="resources\textures\skyBox_front.png" />
+    <Image Include="resources\textures\skyBox_left.png" />
+    <Image Include="resources\textures\skyBox_right.png" />
+    <Image Include="resources\textures\skyBox_up.png" />
+    <Image Include="resources\up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="resources\shaders\auroraFRAG.glsl" />
+    <None Include="resources\shaders\changeGS.glsl" />
+    <None Include="resources\shaders\clouds.frag" />
+    <None Include="resources\shaders\clouds.vert" />
+    <None Include="resources\shaders\debugDepthFRAG.glsl" />
+    <None Include="resources\shaders\debugDepthVS.glsl" />
+    <None Include="resources\shaders\DEBUGshowSkyboxFRAG.glsl" />
+    <None Include="resources\shaders\DEBUGshowSkyboxVS.glsl" />
+    <None Include="resources\shaders\depth.frag" />
+    <None Include="resources\shaders\depth.vert" />
+    <None Include="resources\shaders\equalRectFRAG.glsl" />
+    <None Include="resources\shaders\equalRectVS.glsl" />
+    <None Include="resources\shaders\fragmentShader.glsl" />
+    <None Include="resources\shaders\changeFRAG.glsl" />
+    <None Include="resources\shaders\changeVS.glsl" />
+    <None Include="resources\shaders\gaussianBlurFRAG.glsl" />
+    <None Include="resources\shaders\gaussianBlurVS.glsl" />
+    <None Include="resources\shaders\genBrdfLutFRAG.glsl" />
+    <None Include="resources\shaders\genBrdfLutVS.glsl" />
+    <None Include="resources\shaders\HdrFRAG.glsl" />
+    <None Include="resources\shaders\HdrVS.glsl" />
+    <None Include="resources\shaders\irradianceMapFRAG.glsl" />
+    <None Include="resources\shaders\itt3Cloud.glsl" />
+    <None Include="resources\shaders\NVisualizeFragment.glsl" />
+    <None Include="resources\shaders\NVisualizeGeometry.glsl" />
+    <None Include="resources\shaders\NVisualizeVertex.glsl" />
+    <None Include="resources\shaders\preFilterFRAG.glsl" />
+    <None Include="resources\shaders\screenFragmentShader.glsl" />
+    <None Include="resources\shaders\screenVertexShader.glsl" />
+    <None Include="resources\shaders\shadowMapVertex.glsl" />
+    <None Include="resources\shaders\simpleDepthFRAG.glsl" />
+    <None Include="resources\shaders\simpleDepthShaderFragment - .glsl" />
+    <None Include="resources\shaders\simpleDepthShaderVS.glsl" />
+    <None Include="resources\shaders\skyBoxFragmentShader.glsl" />
+    <None Include="resources\shaders\skyBoxHDRFRAG.glsl" />
+    <None Include="resources\shaders\skyBoxHDRVS.glsl" />
+    <None Include="resources\shaders\skyBoxVertexShader.glsl" />
+    <None Include="resources\shaders\standardFRAG.glsl" />
+    <None Include="resources\shaders\standardVS.glsl" />
+    <None Include="resources\shaders\vertexShader.glsl" />
+    <None Include="resources\textures\hdr\064_hdrmaps_com_free.exr" />
+    <None Include="resources\textures\hdr\10-Shiodome_Stairs_3k.hdr" />
+    <None Include="resources\textures\hdr\Arches_E_PineTree_3k.hdr" />
+    <None Include="resources\textures\hdr\kiara_5_noon_4k.hdr" />
+    <None Include="resources\textures\hdr\Mans_Outside_2k.hdr" />
+    <None Include="resources\textures\hdr\moonless_golf_4k.hdr" />
+    <None Include="resources\textures\hdr\rainforest_trail_4k.hdr" />
+    <None Include="resources\textures\hdr\test8_Ref.hdr" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Library\glad\src\glad.c" />
+    <ClCompile Include="src\Clouds.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\imgui_tables.cpp" />
+    <ClCompile Include="imgui\imgui_widgets.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\Fbo.cpp" />
+    <ClCompile Include="src\depthMapMain.cpp" />
+    <ClCompile Include="src\FrameBuffer.cpp" />
+    <ClCompile Include="src\LightDirectional.cpp" />
+    <ClCompile Include="src\LightPoint.cpp" />
+    <ClCompile Include="src\LightSpot.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Material.cpp" />
+    <ClCompile Include="src\Mesh.cpp" />
+    <ClCompile Include="src\Model.cpp" />
+    <ClCompile Include="src\Shader.cpp" />
+    <ClCompile Include="src\ShaderList.cpp" />
+    <ClCompile Include="src\SkyBox.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets" Condition="Exists('packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" />
+    <Import Project="packages\Assimp.3.0.0\build\native\Assimp.targets" Condition="Exists('packages\Assimp.3.0.0\build\native\Assimp.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Assimp.redist.3.0.0\build\native\Assimp.redist.targets'))" />
+    <Error Condition="!Exists('packages\Assimp.3.0.0\build\native\Assimp.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Assimp.3.0.0\build\native\Assimp.targets'))" />
+  </Target>
+</Project>

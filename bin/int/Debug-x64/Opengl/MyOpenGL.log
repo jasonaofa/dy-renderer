@@ -1,0 +1,175 @@
+﻿  main.cpp
+E:\TA\LearnOpenGL\Engine\src\main.cpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+E:\TA\LearnOpenGL\Engine\src\main.cpp(105,32): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(105,19): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(286,58): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(286,45): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(296,58): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(296,45): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(307,75): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(307,62): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(319,25): warning C4244: “初始化”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(320,26): warning C4244: “初始化”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(332,59): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(332,46): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(518,67): warning C4305: “参数”: 从“double”到“float”截断
+E:\TA\LearnOpenGL\Engine\src\main.cpp(693,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+E:\TA\LearnOpenGL\Engine\src\main.cpp(708,33): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(708,20): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(901,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(902,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(906,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(907,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(909,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+E:\TA\LearnOpenGL\Engine\src\main.cpp(910,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetErrorCallback，函数 "bool __cdecl ImGui_ImplGlfw_Init(struct GLFWwindow *,bool,enum GlfwClientApi)" (?ImGui_ImplGlfw_Init@@YA_NPEAUGLFWwindow@@_NW4GlfwClientApi@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetMonitors，函数 "void __cdecl ImGui_ImplGlfw_UpdateMonitors(void)" (?ImGui_ImplGlfw_UpdateMonitors@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetMonitorPos，函数 "void __cdecl ImGui_ImplGlfw_UpdateMonitors(void)" (?ImGui_ImplGlfw_UpdateMonitors@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetMonitorWorkarea，函数 "void __cdecl ImGui_ImplGlfw_UpdateMonitors(void)" (?ImGui_ImplGlfw_UpdateMonitors@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetMonitorContentScale，函数 "void __cdecl ImGui_ImplGlfw_UpdateMonitors(void)" (?ImGui_ImplGlfw_UpdateMonitors@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetMonitorCallback，函数 "bool __cdecl ImGui_ImplGlfw_Init(struct GLFWwindow *,bool,enum GlfwClientApi)" (?ImGui_ImplGlfw_Init@@YA_NPEAUGLFWwindow@@_NW4GlfwClientApi@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetVideoMode，函数 "void __cdecl ImGui_ImplGlfw_UpdateMonitors(void)" (?ImGui_ImplGlfw_UpdateMonitors@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwWindowHint，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwWindowHint
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwCreateWindow，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwCreateWindow
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwDestroyWindow，函数 "void __cdecl ImGui_ImplGlfw_DestroyWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_DestroyWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwDestroyWindow
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowTitle，函数 "void __cdecl ImGui_ImplGlfw_SetWindowTitle(struct ImGuiViewport *,char const *)" (?ImGui_ImplGlfw_SetWindowTitle@@YAXPEAUImGuiViewport@@PEBD@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetWindowPos，函数 "void __cdecl ImGui_ImplGlfw_CursorPosCallback(struct GLFWwindow *,double,double)" (?ImGui_ImplGlfw_CursorPosCallback@@YAXPEAUGLFWwindow@@NN@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowPos，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetWindowSize，函数 "struct ImVec2 __cdecl ImGui_ImplGlfw_GetWindowSize(struct ImGuiViewport *)" (?ImGui_ImplGlfw_GetWindowSize@@YA?AUImVec2@@PEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowSize，函数 "void __cdecl ImGui_ImplGlfw_SetWindowSize(struct ImGuiViewport *,struct ImVec2)" (?ImGui_ImplGlfw_SetWindowSize@@YAXPEAUImGuiViewport@@UImVec2@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetFramebufferSize，函数 "void __cdecl ImGui_ImplGlfw_NewFrame(void)" (?ImGui_ImplGlfw_NewFrame@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowOpacity，函数 "void __cdecl ImGui_ImplGlfw_SetWindowAlpha(struct ImGuiViewport *,float)" (?ImGui_ImplGlfw_SetWindowAlpha@@YAXPEAUImGuiViewport@@M@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwShowWindow，函数 "void __cdecl ImGui_ImplGlfw_ShowWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_ShowWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwFocusWindow，函数 "void __cdecl ImGui_ImplGlfw_SetWindowFocus(struct ImGuiViewport *)" (?ImGui_ImplGlfw_SetWindowFocus@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetWindowAttrib，函数 "bool __cdecl ImGui_ImplGlfw_GetWindowFocus(struct ImGuiViewport *)" (?ImGui_ImplGlfw_GetWindowFocus@@YA_NPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowPosCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowSizeCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowCloseCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowFocusCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetInputMode，函数 "void __cdecl ImGui_ImplGlfw_UpdateMouseCursor(void)" (?ImGui_ImplGlfw_UpdateMouseCursor@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetInputMode，函数 "void __cdecl ImGui_ImplGlfw_UpdateMouseCursor(void)" (?ImGui_ImplGlfw_UpdateMouseCursor@@YAXXZ) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwSetInputMode
+My.obj : error LNK2001: 无法解析的外部符号 glfwSetInputMode
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetKeyName，函数 "int __cdecl ImGui_ImplGlfw_TranslateUntranslatedKey(int,int)" (?ImGui_ImplGlfw_TranslateUntranslatedKey@@YAHHH@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetCursorPos，函数 "void __cdecl ImGui_ImplGlfw_UpdateMouseData(void)" (?ImGui_ImplGlfw_UpdateMouseData@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetCursorPos，函数 "void __cdecl ImGui_ImplGlfw_UpdateMouseData(void)" (?ImGui_ImplGlfw_UpdateMouseData@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwCreateStandardCursor，函数 "bool __cdecl ImGui_ImplGlfw_Init(struct GLFWwindow *,bool,enum GlfwClientApi)" (?ImGui_ImplGlfw_Init@@YA_NPEAUGLFWwindow@@_NW4GlfwClientApi@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwDestroyCursor，函数 "void __cdecl ImGui_ImplGlfw_Shutdown(void)" (?ImGui_ImplGlfw_Shutdown@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetCursor，函数 "void __cdecl ImGui_ImplGlfw_UpdateMouseCursor(void)" (?ImGui_ImplGlfw_UpdateMouseCursor@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetKeyCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetCharCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetMouseButtonCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetCursorPosCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwSetCursorPosCallback
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetCursorEnterCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetScrollCallback，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetGamepadState，函数 "void __cdecl ImGui_ImplGlfw_UpdateGamepads(void)" (?ImGui_ImplGlfw_UpdateGamepads@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSetClipboardString，函数 "void __cdecl ImGui_ImplGlfw_SetClipboardText(void *,char const *)" (?ImGui_ImplGlfw_SetClipboardText@@YAXPEAXPEBD@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetClipboardString，函数 "char const * __cdecl ImGui_ImplGlfw_GetClipboardText(void *)" (?ImGui_ImplGlfw_GetClipboardText@@YAPEBDPEAX@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetTime，函数 "void __cdecl ImGui_ImplGlfw_NewFrame(void)" (?ImGui_ImplGlfw_NewFrame@@YAXXZ) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwMakeContextCurrent，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwMakeContextCurrent
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSwapBuffers，函数 "void __cdecl ImGui_ImplGlfw_SwapBuffers(struct ImGuiViewport *,void *)" (?ImGui_ImplGlfw_SwapBuffers@@YAXPEAUImGuiViewport@@PEAX@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwSwapBuffers
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwSwapInterval，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwSwapInterval
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwGetWin32Window，函数 "void __cdecl ImGui_ImplGlfw_CreateWindow(struct ImGuiViewport *)" (?ImGui_ImplGlfw_CreateWindow@@YAXPEAUImGuiViewport@@@Z) 中引用了该符号
+imgui_impl_glfw.obj : error LNK2019: 无法解析的外部符号 glfwCreateWindowSurface，函数 "int __cdecl ImGui_ImplGlfw_CreateVkSurface(struct ImGuiViewport *,unsigned __int64,void const *,unsigned __int64 *)" (?ImGui_ImplGlfw_CreateVkSurface@@YAHPEAUImGuiViewport@@_KPEBXPEA_K@Z) 中引用了该符号
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewActiveTexture，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewActiveTexture
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewActiveTexture
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewBindBuffer，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindBuffer
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindBuffer
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindBuffer
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewBufferData，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewBufferData
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewBufferData
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewBufferData
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewGenBuffers，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenBuffers
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenBuffers
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenBuffers
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewEnableVertexAttribArray，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewEnableVertexAttribArray
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewEnableVertexAttribArray
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewEnableVertexAttribArray
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewVertexAttribPointer，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewVertexAttribPointer
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewVertexAttribPointer
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewVertexAttribPointer
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewBindFramebuffer，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindFramebuffer
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewBindRenderbuffer，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindRenderbuffer
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewFramebufferRenderbuffer，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewFramebufferRenderbuffer
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewFramebufferTexture2D，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewFramebufferTexture2D
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewGenFramebuffers，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenFramebuffers
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewGenRenderbuffers，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenRenderbuffers
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewGenerateMipmap，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+Material.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenerateMipmap
+Model.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenerateMipmap
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewRenderbufferStorage，函数 "public: static void __cdecl Core::getIndirectDiffuseMaps(unsigned int *,unsigned int *,class Shader *,class Shader *)" (?getIndirectDiffuseMaps@Core@@SAXPEAI0PEAVShader@@1@Z) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewRenderbufferStorage
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewBindVertexArray，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindVertexArray
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindVertexArray
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewBindVertexArray
+Core.obj : error LNK2019: 无法解析的外部符号 __imp___glewGenVertexArrays，函数 "public: static unsigned int __cdecl Core::getQuadVAO(void)" (?getQuadVAO@Core@@SAIXZ) 中引用了该符号
+FrameBuffer.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenVertexArrays
+Mesh.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenVertexArrays
+SkyBox.obj : error LNK2001: 无法解析的外部符号 __imp___glewGenVertexArrays
+FrameBuffer.obj : error LNK2019: 无法解析的外部符号 __imp___glewCheckFramebufferStatus，函数 "public: void __cdecl FrameBuffer::setFbo(int,int)" (?setFbo@FrameBuffer@@QEAAXHH@Z) 中引用了该符号
+imguiLayer.obj : error LNK2019: 无法解析的外部符号 glfwPollEvents，函数 "public: void __cdecl imguiLayer::begin(void)" (?begin@imguiLayer@@QEAAXXZ) 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 glfwPollEvents
+main.obj : error LNK2019: 无法解析的外部符号 glewInit，函数 main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 glfwInit，函数 main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 glfwTerminate，函数 main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 glfwWindowShouldClose，函数 main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 glfwSetWindowShouldClose，函数 "void __cdecl processInput(struct GLFWwindow *)" (?processInput@@YAXPEAUGLFWwindow@@@Z) 中引用了该符号
+My.obj : error LNK2001: 无法解析的外部符号 glfwSetWindowShouldClose
+main.obj : error LNK2019: 无法解析的外部符号 glfwGetKey，函数 "void __cdecl processInput(struct GLFWwindow *)" (?processInput@@YAXPEAUGLFWwindow@@@Z) 中引用了该符号
+My.obj : error LNK2001: 无法解析的外部符号 glfwGetKey
+main.obj : error LNK2019: 无法解析的外部符号 glfwGetMouseButton，函数 main 中引用了该符号
+main.obj : error LNK2019: 无法解析的外部符号 glfwGetCurrentContext，函数 main 中引用了该符号
+main.obj : error LNK2001: 无法解析的外部符号 __glewActiveTexture
+main.obj : error LNK2001: 无法解析的外部符号 __glewDrawBuffers
+main.obj : error LNK2001: 无法解析的外部符号 __glewBindFramebuffer
+main.obj : error LNK2001: 无法解析的外部符号 __glewBindRenderbuffer
+main.obj : error LNK2001: 无法解析的外部符号 __glewCheckFramebufferStatus
+main.obj : error LNK2001: 无法解析的外部符号 __glewFramebufferRenderbuffer
+main.obj : error LNK2001: 无法解析的外部符号 __glewFramebufferTexture2D
+main.obj : error LNK2001: 无法解析的外部符号 __glewGenFramebuffers
+main.obj : error LNK2001: 无法解析的外部符号 __glewGenRenderbuffers
+main.obj : error LNK2001: 无法解析的外部符号 __glewRenderbufferStorage
+main.obj : error LNK2001: 无法解析的外部符号 __glewBindVertexArray
+main.obj : error LNK2001: 无法解析的外部符号 glewExperimental
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewAttachShader，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewCompileShader，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewCreateProgram，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewCreateShader，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewDeleteShader，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewGetProgramInfoLog，函数 "private: void __cdecl Shader::checkShaderCompileError(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?checkShaderCompileError@Shader@@AEAAXIV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewGetProgramiv，函数 "private: void __cdecl Shader::checkShaderCompileError(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?checkShaderCompileError@Shader@@AEAAXIV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewGetShaderInfoLog，函数 "private: void __cdecl Shader::checkShaderCompileError(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?checkShaderCompileError@Shader@@AEAAXIV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewGetShaderiv，函数 "private: void __cdecl Shader::checkShaderCompileError(unsigned int,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> >)" (?checkShaderCompileError@Shader@@AEAAXIV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewGetUniformLocation，函数 "public: void __cdecl Shader::PassMat4ToShader(char const *,struct glm::tmat4x4<float,0>)" (?PassMat4ToShader@Shader@@QEAAXPEBDU?$tmat4x4@M$0A@@glm@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewLinkProgram，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewShaderSource，函数 "public: __cdecl Shader::Shader(char const *,char const *,char const *)" (??0Shader@@QEAA@PEBD00@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUniform1f，函数 "public: void __cdecl Shader::PassUniformToShader(char const *,float)" (?PassUniformToShader@Shader@@QEAAXPEBDM@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUniform1i，函数 "public: void __cdecl Shader::PassUniformToShader(char const *,int)" (?PassUniformToShader@Shader@@QEAAXPEBDH@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUniform2f，函数 "public: void __cdecl Shader::PassUniformToShader(char const *,struct glm::tvec2<float,0>)" (?PassUniformToShader@Shader@@QEAAXPEBDU?$tvec2@M$0A@@glm@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUniform3f，函数 "public: void __cdecl Shader::PassUniformToShader(char const *,struct glm::tvec3<float,0>)" (?PassUniformToShader@Shader@@QEAAXPEBDU?$tvec3@M$0A@@glm@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUniform3fv，函数 "public: void __cdecl Shader::setVec3(class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &,struct glm::tvec3<float,0> const &)" (?setVec3@Shader@@QEAAXAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@AEBU?$tvec3@M$0A@@glm@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUniformMatrix4fv，函数 "public: void __cdecl Shader::PassMat4ToShader(char const *,struct glm::tmat4x4<float,0>)" (?PassMat4ToShader@Shader@@QEAAXPEBDU?$tmat4x4@M$0A@@glm@@@Z) 中引用了该符号
+Shader.obj : error LNK2019: 无法解析的外部符号 __imp___glewUseProgram，函数 "public: void __cdecl Shader::use(void)" (?use@Shader@@QEAAXXZ) 中引用了该符号
+Library\glfw-3.3.7.bin.WIN32\lib-vc2019\glfw3.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
+Library\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32\glew32s.lib : warning LNK4272: 库计算机类型“x86”与目标计算机类型“x64”冲突
+E:\TA\LearnOpenGL\Engine\bin\Debug-x64\Opengl\Opengl.exe : fatal error LNK1120: 104 个无法解析的外部命令

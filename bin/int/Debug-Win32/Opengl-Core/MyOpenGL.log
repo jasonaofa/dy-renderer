@@ -1,0 +1,71 @@
+﻿  Log.cpp
+  LayerStack.cpp
+  ImGuiLayer.cpp
+  Layer.cpp
+  Event.cpp
+  Application.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: “APIENTRY”: 宏重定义
+C:\Users\frank\Documents\GitHub\DyRenderer\Library\glad\include\glad\glad.h(32): message : 参见“APIENTRY”的前一个定义
+  Clouds.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  Camera.cpp
+  Fbo.cpp
+C:\Users\frank\Documents\GitHub\DyRenderer\src\Fbo.cpp(179,32): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\Fbo.cpp(179,19): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\Fbo.cpp(266,32): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\Fbo.cpp(266,19): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+  depthMapMain.cpp
+  FrameBuffer.cpp
+  LightDirectional.cpp
+  LightPoint.cpp
+  正在生成代码...
+  正在编译...
+  LightSpot.cpp
+  main.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: “APIENTRY”: 宏重定义
+C:\Users\frank\Documents\GitHub\DyRenderer\Library\glad\include\glad\glad.h(32): message : 参见“APIENTRY”的前一个定义
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(142,53): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(142,40): warning C4244: “参数”: 从“float”转换到“int”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(160,32): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(160,19): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(213,63): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(213,47): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(265,76): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(265,63): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(308,36): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(308,20): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(320,33): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(320,20): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(470,51): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(470,33): warning C4244: “参数”: 从“float”转换到“GLsizei”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(515,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(516,11): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(520,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(521,17): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(523,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(524,10): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(645,75): warning C4305: “参数”: 从“double”到“float”截断
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(720,79): warning C4305: “参数”: 从“double”到“float”截断
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(736,68): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(736,55): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(741,80): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+C:\Users\frank\Documents\GitHub\DyRenderer\src\main.cpp(741,67): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
+  Material.cpp
+  Mesh.cpp
+  Model.cpp
+  Shader.cpp
+  ShaderList.cpp
+  SkyBox.cpp
+  WindowsWindow.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(130,1): warning C4005: “APIENTRY”: 宏重定义
+C:\Users\frank\Documents\GitHub\DyRenderer\Library\glad\include\glad\glad.h(32): message : 参见“APIENTRY”的前一个定义
+  正在生成代码...
+  glad.c
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+  MyOpenGL.vcxproj -> C:\Users\frank\Documents\GitHub\DyRenderer\bin\Debug-Win32\Opengl-Core\Opengl-Core.exe
