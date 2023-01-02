@@ -224,39 +224,39 @@ float windStrength = 0.0005f;
 glm::vec3 windDirection = glm::vec3(0.35f, 0, 0);
 
 // Sun Params
-float sunEnergy = 1.0f;
-float anbientIntensity = 0.1f;
+float sunEnergy = 1.8f;
+float anbientIntensity = 0.329f;
 glm::vec3 sunColor = glm::vec3(1.0, 1.0, 1.0);
 
-glm::vec3 verticalProbParam = glm::vec3(1.0, 1.0, 1.0);
+glm::vec3 verticalProbParam = glm::vec3(0.0, 0.13, 2.01);
 
-glm::vec4 CloudBaseColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+glm::vec4 CloudBaseColor = glm::vec4(0.613f, 0.795f, 1.0f, 1.0f);
 glm::vec4 CloudTopColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-float precipiFactor = 0.08f;
+float precipiFactor = 0.513f;
 float coverageFactor = 0.0f;
-float curlNoiseMultiple = 1.0f;
+float curlNoiseMultiple = 0.0f;
 
 // Cloud Detail Params.
-float detailScale = 0.1f;
+float detailScale = 1.68f;
 glm::vec3 detailwindDirection = glm::vec3(0.005, 0.0, 0.005);
 
 ////////////////////////////////////////////////////////////
 //added parameters
 float cloudVolumeStartHeight = 4000.0f; // meters - height above ground level 云层开始的高度（从地表开始算
-float cloudVolumeHeight = 9000.0f; // meters - height above ground level 云层所占的高度即云层的厚度（从地表开始算
+float cloudVolumeHeight = 12000.0f; // meters - height above ground level 云层所占的高度即云层的厚度（从地表开始算
 
 float groundRadius = 637100.0f; // meters - for a ground/lower atmosphere only version, this could be smaller
 // Cloud Animation Params.
-float cloudSpeed = 3.912f;
+float cloudSpeed = 27.7f;
 
 
-glm::vec3 weatherTexMod = glm::vec3(1.0f, 0, 0); // scale(x), offset(y, z)
+glm::vec3 weatherTexMod = glm::vec3(0.5f, 0, 0); // scale(x), offset(y, z)
 
 
 float cloudTopOffset = 1.0f;
 
-float NoiseThreshold = 0.6f;
-float NoiseMax = 0.9f;
+float NoiseThreshold = 0.0f;
+float NoiseMax = 0.777f;
 // ---------------------------------*Light*---------------------------------
 LightDirectional light_directional(
 	//position
@@ -436,7 +436,6 @@ int main(int argc, char* argv[])
 	while (!glfwWindowShouldClose(window))
 	{
 
-		//drawUI();
 		processInput(window);; // ---------------------------------*MVP矩阵*---------------------------------
 		//赋值
 		view = camera.GetViewMatrix();
@@ -790,135 +789,6 @@ void windowResizeCallBack(GLFWwindow* window, int width, int height)
 	Fbo::SetScreenWidth(width);
 }
 
-void drawUI()
-{
-	// Poll and handle events (inputs, window resize, etc.)
-	glfwPollEvents();
-	// Start the Dear ImGui frame
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-
-	ImGui::Begin("inspector"); // Create a window called "Hello, world!" and append into it.
-	//ImGui::Text("My Owen Render Demo v0.0.1");
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate,
-	            ImGui::GetIO().Framerate);
-
-	if (ImGui::Button("EnableShadow"))
-		shadowFlagClicked++;
-	shadowFlag = false;
-	if (shadowFlagClicked & 1)
-	{
-		shadowFlag = true;
-	}
-
-	ImGui::SameLine();
-	if (ImGui::Button("ShowShadowMap"))
-		shadowMapFlagClicked++;
-	shadowMapFlag = false;
-	if (shadowMapFlagClicked & 1)
-	{
-		shadowMapFlag = true;
-	}
-
-
-	ImGui::SliderInt("SPF-Size", &m_SPFSize, 1, 12);
-	ImGui::InputFloat("shadowMapBias", &m_shadowMapBias, 0.0001, 0.001, "%.5");
-
-	ImGui::Text("DirLight:");
-	ImGui::SliderFloat("DirLight Intensity", light_directional.SetIntensity(), 0.0f, 5.0f);
-	// Edit 1 float using a slider from 0.0f to 1.0f
-	//ImGui::ColorEdit3("DirLigh Ccolor", (float*)&light_directional.color);
-	// Edit 3 floats representing a color
-	ImGui::SliderFloat3("LightDirection", (float*)light_directional.SetAngles(), -360, 360);
-	ImGui::SliderFloat3("cameraPos", (float*)camera.SetPosition(), -360, 30000);
-	//ImGui::SliderFloat3("LightPosition", (float*)&light_directional.position, -360, 360);
-	ImGui::Spacing();
-
-	//ImGui::SliderFloat("exposure ", (float*)&exposure, 0.001, 10.0f);
-	//这里记得要更新direction，因为们是传direction到shader，而angles的值在初始化的时候就定了，然后马上会调用这个函数去更新方向，
-	//所以如果不在这里再次更新方向，那angles的值就算用指针变了，但是他不会更新成direction。
-	light_directional.UpdateDirection();
-
-	ImGui::SameLine();
-	if (ImGui::Button("CloudsON!"))
-		cloudsOnFlagClicked++;
-	cloudsOnFlag = false;
-	if (cloudsOnFlagClicked & 1)
-	{
-		cloudsOnFlag = true;
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("ShowWeatherMap"))showWeatherClicked++;
-	shoWeatherMap = false;
-	if (showWeatherClicked & 1)shoWeatherMap = true;
-	if (shoWeatherMap)
-	{
-		ImGui::RadioButton("Coverage", &weatherMapChannel, 0);
-		ImGui::SameLine();
-		ImGui::RadioButton("Precipitation", &weatherMapChannel, 1);
-		ImGui::SameLine();
-		ImGui::RadioButton("CloudType", &weatherMapChannel, 2);
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Reload Shader&Weather"))
-		reloadShaderOnFlagClicked++;
-	reloadShaderOnFlag = false;
-	if (reloadShaderOnFlagClicked & 1)
-	{
-		reloadShaderOnFlag = true;
-	}
-
-	ImGui::SliderFloat("windStrength", &windStrength, 0.000f, 0.001f, "%.5f");
-	ImGui::InputFloat3("windDirection", glm::value_ptr(windDirection));
-
-	ImGui::InputFloat("Sun Energy", &sunEnergy, 0.0f, 10.0f);
-	ImGui::ColorEdit3("Sun Color", glm::value_ptr(sunColor));
-
-
-	ImGui::Text("Global Clouds Settings");
-	ImGui::InputFloat("CloudVolumeStartHeight", &cloudVolumeStartHeight, 0.0f, 10000.0f);
-	ImGui::InputFloat("CloudVolumeHeight", &cloudVolumeHeight, 0.0f, 10000.0f);
-	ImGui::InputFloat("groundRadius", &groundRadius, 0.0f, 10000.0f);
-
-
-	ImGui::SliderFloat("cloudTopOffset", &cloudTopOffset, -10.0f, 500.0f);
-	ImGui::InputFloat3("weatherTexMod", glm::value_ptr(weatherTexMod));
-
-	ImGui::Text("Cloud Shape Settings");
-	ImGui::SliderFloat("precipiFactor", &precipiFactor, 0, 1.0f, "%.3f");
-	ImGui::SliderFloat("coverageFactor", &coverageFactor, 0, 1.0f, "%.3f");
-
-
-	ImGui::Text("Cloud Detail Settings");
-	ImGui::SliderFloat("detailScale", &detailScale, 0.0001, 10.0f, "%.4f");
-	ImGui::SliderFloat("curlNoiseMultiple", &curlNoiseMultiple, 0, 10.0f, "%.3f");
-
-	ImGui::InputFloat3("detailwindDirection", (float*)&detailwindDirection);
-	ImGui::SliderFloat("Wind Cloud Speed", &cloudSpeed, 0.0f, 100.0f);
-
-
-	//buffer images
-	int bufferWidth, bufferHight;
-	bufferWidth = 220;
-	bufferHight = 220;
-	if (ImGui::BeginTable("bufferImages", 2))
-	{
-		ImGui::TableNextRow();
-		ImGui::TableNextColumn();
-		ImGui::Text("Weather Texture");
-		ImGui::Image((void*)Clouds::getWeatherTex(), ImVec2(bufferWidth, bufferHight));
-
-
-		ImGui::TableNextColumn();
-		ImGui::Text("CurlNoiseTex");
-		ImGui::Image((void*)(intptr_t)Clouds::getCurlNoiseTex(), ImVec2(bufferWidth, bufferHight));
-
-		ImGui::EndTable();
-	}
-	ImGui::End();
-}
-
 void imguiDock()
 {
 	ImGui_ImplOpenGL3_NewFrame();
@@ -1113,7 +983,7 @@ void imguiDock()
 		ImGui::InputFloat3("weatherTexMod", glm::value_ptr(weatherTexMod));
 
 		ImGui::Text("Cloud Shape Settings");
-		ImGui::SliderFloat("precipiFactor", &precipiFactor, 0, 1.0f, "%.3f");
+		ImGui::SliderFloat("precipiFactor", &precipiFactor, 0, 5.0f, "%.3f");
 		ImGui::SliderFloat("coverageFactor", &coverageFactor, 0, 1.0f, "%.3f");
 
 

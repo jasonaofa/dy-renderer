@@ -410,6 +410,11 @@ float beerLambert(float sampleDensity, float precipitation)
 	return exp(-sampleDensity *precipitation);
 }
 
+float Beer(float opticalDepth)
+{
+	return exp(-1 * 0.01f * opticalDepth);
+}
+
 float powder(float sampleDensity, float lightDotEye)
 {
 
@@ -540,20 +545,23 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	float primary_attenuation = exp( -densityToSun*precipiFactor);
 	float secondary_attenuation = exp(-densityToSun * 0.25) * 0.7;
 	//float attenuation_probability = max(primary_attenuation,secondary_attenuation);
-	float attenuation_probability = max( remap( lightDotEye, 0.7, 1.0, secondary_attenuation, secondary_attenuation * 0.25) , primary_attenuation);
+	float attenuation_probability = max( remap( lightDotEye, 0.1, 1.0, secondary_attenuation, secondary_attenuation * 0.25) , primary_attenuation);
 
 	//////////////////////////////
 	//SCATTER
 	//////////////////////////////
 	//SIG2017
 	//float depth_probability =  0.05 + pow(lowLoddedDensity, remap( percent_height,0,1, 1, 2.0));
-	// depth_probability =  0.05 + pow(lowLoddedDensity, remap(percent_height,0,1,1,0));//MY WAY
+	
 	//float vertical_probability = pow( saturate(remap( percent_height, 0.08, 0.25, 0, 1.0 )),1 );
 	//float vertical_probability = pow( saturate(remap( percent_height, verticalProbParam.x, verticalProbParam.y, 0, 1.0 )),verticalProbParam.z );
 	
-    float depth_probability = lerp( 0.05 + pow( lowLoddedDensity, remap( percent_height, 0.3, 0.85, 0.5, 2.0 )), 1.0, saturate( densityToSun / stepSize));
-    float vertical_probability = pow( remap( percent_height, 0.07, 0.14, 0.1, 1.0 ), 0.8 );	
-	float in_scatter_probability =depth_probability*vertical_probability;
+   // float depth_probability = lerp( 0.05 + pow( lowLoddedDensity, remap( percent_height, 0.3, 0.85, 0.5, 2.0 )), 1.0, saturate( densityToSun / stepSize));
+	
+	float depth_probability =  0.25 + pow(lowLoddedDensity, remap( percent_height,0.1, 0.99, 0.9, 2.0 ));
+	//depth_probability =  0.25 + pow(lowLoddedDensity, remap(percent_height,0.5,1,1,0));//MY WAY
+	float vertical_probability = pow( saturate(remap( percent_height, verticalProbParam.x, verticalProbParam.y, 0, 1.0 )), verticalProbParam.z );	
+	float in_scatter_probability =depth_probability*vertical_probability ;
 
 
 
@@ -562,8 +570,8 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	/////////////////5////////////	
 	//Can be calculated once for each march but gave no/tiny perf improvements.
 	float eccentricity =      0.6;
-	float silver_intensity = 12;
-	float silver_spread =     0.4;
+	float silver_intensity = 10;
+	float silver_spread =     0.6;
 	float Energy = max(HG(lightDotEye, eccentricity), silver_intensity* HG(lightDotEye, 0.99-silver_spread));
 	//return Energy;
 	float sun_highlight = InOutScatter(lightDotEye,5.5f,10f,0.5f);
@@ -572,7 +580,10 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	//////////////////////////////
 	//AMBIENT
 	//////////////////////////////
-	float attenuation = Energy*attenuation_probability*sunEnergy*in_scatter_probability;
+	//float attenuation = (attenuation_probability*2)*sunEnergy*vertical_probability;
+	//TODO 
+	float totalLightFactor = 0.35f;
+	float attenuation = primary_attenuation*in_scatter_probability*sunEnergy+totalLightFactor;
 
 	float cloud_ambient_minimum =0;
 	//attenuation = max(cloudDensity*cloud_ambient_minimum*(pow(saturate(densityToSun/4000),2)),attenuation);
@@ -582,33 +593,11 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	//return in_scatter_probability;
 
 
-	float sunlighting = 1.0f;
-	float skylighting =1.0f;
-	vec3 colorShadowlight = CloudBaseColor.rgb;
-	vec3 colorSkylight = CloudTopColor.rgb;//should be vec3 for skyLight's color;
-
-	float sunlightEnergy = 1.0 / (densityToSun * 5 );
-	float powderFactor = exp2(-lowLoddedDensity * 12.0 /sunlighting);// cp.sunlighting CLEAR=1 RAIN=0.6
-	sunlightEnergy *= MiePhaseFunction(powderFactor*0.3 , lightDotEye * 0.5 + 0.5);
-	vec3 sunlightColor = colorShadowlight * (sunlightEnergy * sunlighting * 90.0);
-
-	vec3 cloudColor = sunlightColor  ;
 
 
-	float skylightEnergy = 0.15 / (densityToSun * 1.0 + 1.0);
-	vec3 skylightColor = colorSkylight * skylightEnergy * skylighting;
-
-	cloudColor+=skylightColor;
-
-
-
-
-	vec3 tempvec3 = vec3(in_scatter_probability*attenuation_probability*Energy*sunEnergy);
-	//vec3 tempvec3 = vec3(in_scatter_probability);
+	vec3 tempvec3 = vec3(attenuation);
 	return vec4(tempvec3,1);
 
-	//return vec4(sunlightColor,1);
-	return vec4(cloudColor,1);
 
 }
 
@@ -642,7 +631,7 @@ vec4 sampleClouddensityToSun(
 {
 //DEBUG
 //	vec3 lightStep = stepSize * lightDir;
-	vec3 lightStep = stepSize * -lightDir;//default
+	vec3 lightStep = stepSize * lightDir;//default
 	vec3 pos = startPos;
 	float coneRadius = 1.0f;
 	float coneStep = RCP_LIGHT_RAY_ITERATIONS;
@@ -672,10 +661,17 @@ vec4 sampleClouddensityToSun(
 		}
 		//pos += lightStep;
 		//default
-		pos += -lightStep;
+		pos += lightStep;
 		coneRadius += coneStep;
 
 	}
+
+
+//					float hg = HG(lightDotEye, 0.7);
+//
+//				float extinct = Beer(densityToSun);
+//
+//				return  vec4(extinct * hg);
 
 		return (getLightEnergy(lightDotEye,densityToSun,cloudDensity, 
 		lerp(1.0f, 2.0f, getPrecipitation(weatherData)),
@@ -716,7 +712,9 @@ vec4 traceClouds(
 	vec4 lightDensity = vec4Zero;
 	float transmittance;
 
-
+	float extinct = 1.0;
+	float opticalDepth = 0.0;
+	vec4 color;
 
 	vec3 accumLightDensity;
 	vec3 ambientBadApprox;
@@ -726,6 +724,8 @@ vec4 traceClouds(
 	{
 	//first,get cloud's density from sampleCloudDensity funciton,clouds's density mean the thickness of the cloud
 		float heightFrac = GetHeightFractionForPoint(pos);
+
+		//if (extinct < 0.01 || heightFrac > 1.0 || heightFrac < 0.0) break;
 		weatherData = sampleWeather(pos);
 		float cloudDensity = sampleCloudDensity(
 			pos,
@@ -748,11 +748,24 @@ vec4 traceClouds(
 				phase);
 			 vec3 ambientLight = ambientLight(heightFrac);
 
-			 vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
-			// vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
 
+			
+			float currentOpticalDepth = cloudDensity * stepSize;
+			opticalDepth+=currentOpticalDepth;
+			extinct = Beer(opticalDepth);
+
+			//lightDensity *=currentOpticalDepth;
+
+			color.rgb += (lightDensity.rgb+ambientLight)*extinct;
+			color += lightDensity;
+			//result = color;
+
+			vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
+			// vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
+			
+			
 			source.rgb *= source.a;
-			result = (1.0f - result.a) * source + result;
+			result += (1.0f - result.a) * source;
 			if(result.a >= 1.0f) break;
 		}
 		
