@@ -3,6 +3,7 @@
 - This is a PBR renderer based on the OPENGL forward rendering pipeline，I'm not a professional programmer,
 This is just a very unprofessional record of learning outcomes
 ![输入图片说明](image.png)
+![输入图片说明](screenshot-20230103-181718.png)
 ## 实现的功能有：
 - 基于金属度/粗糙度的PBR-shader
 - IBL
