@@ -231,11 +231,11 @@ float sunEnergy = 1.8f;
 float anbientIntensity = 0.329f;
 glm::vec3 sunColor = glm::vec3(1.0, 1.0, 1.0);
 
-glm::vec3 verticalProbParam = glm::vec3(0.0, 0.13, 2.01);
+glm::vec3 verticalProbParam = glm::vec3(0.0, 0.2, 1.76);
 
 glm::vec4 CloudBaseColor = glm::vec4(0.613f, 0.795f, 1.0f, 1.0f);
 glm::vec4 CloudTopColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-float totalBrightnessFactor = 0.3f;
+float totalBrightnessFactor = 0.4f;
 float powderTopBrightness = 0.15f;
 
 float precipiFactor = 0.513f;
@@ -938,7 +938,7 @@ void imguiDock()
 		//ImGui::ColorEdit3("DirLigh Ccolor", (float*)&light_directional.color);
 		// Edit 3 floats representing a color
 		ImGui::SliderFloat3(Languages::lightDirection, (float*)light_directional.SetAngles(), -360, 360);
-		ImGui::InputFloat3(Languages::cameraPos, (float*)camera.SetPosition());
+		ImGui::DragFloat3(Languages::cameraPos, (float*)camera.SetPosition() ,100.0f, 0.0f, 100000.0f, "%.2f", 1.0f);
 
 		//ImGui::SliderFloat3("LightPosition", (float*)&light_directional.position, -360, 360);
 		ImGui::Spacing();
@@ -980,7 +980,7 @@ void imguiDock()
 
 		ImGui::Text(Languages::globalCloudsSettings);
 		ImGui::InputFloat(Languages::cloudVolumeStartHeight, &cloudVolumeStartHeight, 0.0f, 10000.0f);
-		ImGui::InputFloat(Languages::cloudVolumeStartHeight, &cloudVolumeHeight, 0.0f, 10000.0f);
+		ImGui::InputFloat(Languages::cloudVolumeHeight, &cloudVolumeHeight, 0.0f, 10000.0f);
 		ImGui::InputFloat(Languages::groundRadius, &groundRadius, 0.0f, 10000.0f);
 
 

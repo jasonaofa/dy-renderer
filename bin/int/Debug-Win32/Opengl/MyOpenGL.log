@@ -24,6 +24,7 @@ E:\OpenglCloud\dy-renderer\src\main.cpp(782,10): warning C4244: “=”: 从“d
 E:\OpenglCloud\dy-renderer\src\main.cpp(797,23): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
 E:\OpenglCloud\dy-renderer\src\main.cpp(798,22): warning C4244: “参数”: 从“int”转换到“float”，可能丢失数据
 E:\OpenglCloud\dy-renderer\src\main.cpp(933,85): warning C4305: “参数”: 从“double”到“float”截断
+E:\OpenglCloud\dy-renderer\src\main.cpp(941,106): warning C4244: “参数”: 从“float”转换到“ImGuiSliderFlags”，可能丢失数据
 E:\OpenglCloud\dy-renderer\src\main.cpp(1002,81): warning C4305: “参数”: 从“double”到“float”截断
 E:\OpenglCloud\dy-renderer\src\main.cpp(1013,106): warning C4244: “参数”: 从“float”转换到“ImGuiSliderFlags”，可能丢失数据
 E:\OpenglCloud\dy-renderer\src\main.cpp(1014,105): warning C4244: “参数”: 从“float”转换到“ImGuiSliderFlags”，可能丢失数据
