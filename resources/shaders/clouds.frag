@@ -28,6 +28,8 @@ uniform	vec3 verticalProbParam = vec3(0,0,0);
 
 uniform float cloudSpeed;
 uniform float cloudTopOffset;
+uniform float totalBrightnessFactor;
+uniform float powderTopBrightness;
 
 
 uniform float precipiFactor;
@@ -405,29 +407,12 @@ float sampleCloudDensity(vec3 pos, vec3 weatherData,float heightFrac,bool doChea
 
 //////////////////////////////////////////////////////////////////////////////////////
 ///光照
-float beerLambert(float sampleDensity, float precipitation)
-{
-	return exp(-sampleDensity *precipitation);
-}
-
-float Beer(float opticalDepth)
-{
-	return exp(-1 * 0.01f * opticalDepth);
-}
-
-float powder(float sampleDensity, float lightDotEye)
-{
-
-    return 2.0 * exp(-sampleDensity * lightDotEye) * (1.0 - exp(-2.0 * sampleDensity));
-
-}
 
 //HenyeyGreenstein
 float HG(float lightDotEye,float g)
 {
 	float g2 = g * g;
 	return ((1.0f - g2) / pow((1.0f + g2 - 2.0f * g * lightDotEye), 1.5f)) /(4.0f*PI);
-	//return ((1.0f - g2) / pow((1.0f + g2 - 2.0f * g * lightDotEye), 1.5f)) * 0.25f;
 }
 
 
@@ -498,18 +483,7 @@ vec3 AmbientColor(float heightFrac)
 	return lerpVec3(CloudBaseColor.rgb, CloudTopColor.rgb, heightFrac);
 }
 
-//Henyey-Greenstein相位函数
-float HenyeyGreenstein(float angle, float g)
-{
-    float g2 = g * g;
-    return(1.0 - g2) / (4.0 * PI * pow(1.0 + g2 - 2.0 * g * angle, 1.5));
-}
 
-//两层Henyey-Greenstein散射，使用Max混合。同时兼顾向前 向后散射
-float HGScatterMax(float angle, float g_1, float intensity_1, float g_2, float intensity_2)
-{
-    return max(intensity_1 * HenyeyGreenstein(angle, g_1), intensity_2 * HenyeyGreenstein(angle, g_2));
-}
 
 float MiePhaseFunction(float g, float nu) {
     float gg = g * g;
@@ -518,20 +492,6 @@ float MiePhaseFunction(float g, float nu) {
 }
 
 
-float CalculateMultipleScatteringCloudPhases(float VoL,float wetness){
-	float cloudForwardG = 0.7 - 0.3 * wetness;
-	float cloudBackwardG = -0.2;
-	float cloudMixG = 0.5;
-
-	float phases = 0.0;
-	float cn = 1.0;
-
-    for (int i = 0; i < 4; i++, cn *= 0.5){
-        phases += mix(MiePhaseFunction(cloudBackwardG * cn, VoL), MiePhaseFunction(cloudForwardG * cn, VoL), cloudMixG) * cn;
-    }
-
-	return phases;
-}
 
 
 // beer+powder+HG
@@ -548,18 +508,10 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	float attenuation_probability = max( remap( lightDotEye, 0.1, 1.0, secondary_attenuation, secondary_attenuation * 0.25) , primary_attenuation);
 
 	//////////////////////////////
-	//SCATTER
+	//Powder
 	//////////////////////////////
-	//SIG2017
-	//float depth_probability =  0.05 + pow(lowLoddedDensity, remap( percent_height,0,1, 1, 2.0));
-	
-	//float vertical_probability = pow( saturate(remap( percent_height, 0.08, 0.25, 0, 1.0 )),1 );
-	//float vertical_probability = pow( saturate(remap( percent_height, verticalProbParam.x, verticalProbParam.y, 0, 1.0 )),verticalProbParam.z );
-	
-   // float depth_probability = lerp( 0.05 + pow( lowLoddedDensity, remap( percent_height, 0.3, 0.85, 0.5, 2.0 )), 1.0, saturate( densityToSun / stepSize));
-	
-	float depth_probability =  0.25 + pow(lowLoddedDensity, remap( percent_height,0.1, 0.99, 0.9, 2.0 ));
-	//depth_probability =  0.25 + pow(lowLoddedDensity, remap(percent_height,0.5,1,1,0));//MY WAY
+
+	float depth_probability =  powderTopBrightness+ pow(lowLoddedDensity, remap( percent_height,0.1, 0.99, 0.9, 2.0 ));
 	float vertical_probability = pow( saturate(remap( percent_height, verticalProbParam.x, verticalProbParam.y, 0, 1.0 )), verticalProbParam.z );	
 	float in_scatter_probability =depth_probability*vertical_probability ;
 
@@ -570,8 +522,8 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	/////////////////5////////////	
 	//Can be calculated once for each march but gave no/tiny perf improvements.
 	float eccentricity =      0.6;
-	float silver_intensity = 10;
-	float silver_spread =     0.6;
+	float silver_intensity = 18;
+	float silver_spread =     0.9;
 	float Energy = max(HG(lightDotEye, eccentricity), silver_intensity* HG(lightDotEye, 0.99-silver_spread));
 	//return Energy;
 	float sun_highlight = InOutScatter(lightDotEye,5.5f,10f,0.5f);
@@ -581,19 +533,8 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	//AMBIENT
 	//////////////////////////////
 	//float attenuation = (attenuation_probability*2)*sunEnergy*vertical_probability;
-	//TODO 
-	float totalLightFactor = 0.35f;
-	float attenuation = primary_attenuation*in_scatter_probability*sunEnergy+totalLightFactor;
 
-	float cloud_ambient_minimum =0;
-	//attenuation = max(cloudDensity*cloud_ambient_minimum*(pow(saturate(densityToSun/4000),2)),attenuation);
-	///////////////////////////
-	//return
-	///////////////////////////
-	//return in_scatter_probability;
-
-
-
+	float attenuation = primary_attenuation*in_scatter_probability*sunEnergy*Energy+totalBrightnessFactor;
 
 	vec3 tempvec3 = vec3(attenuation);
 	return vec4(tempvec3,1);
@@ -750,15 +691,6 @@ vec4 traceClouds(
 
 
 			
-			float currentOpticalDepth = cloudDensity * stepSize;
-			opticalDepth+=currentOpticalDepth;
-			extinct = Beer(opticalDepth);
-
-			//lightDensity *=currentOpticalDepth;
-
-			color.rgb += (lightDensity.rgb+ambientLight)*extinct;
-			color += lightDensity;
-			//result = color;
 
 			vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
 			// vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
@@ -800,7 +732,7 @@ vec4 traceClouds(
 
 		// Background.
 	vec4 skyColor = vec4(0.5, 0.7, 1.0, 1.0);
-	vec4 backgroundColor = skyColor + max(0.0, pow(dot(viewDirW, lightDir),512.0));
+	vec4 backgroundColor = skyColor + max(0.0, pow(dot(viewDirW, lightDir),1024.0));
 
 	return vec4(cloudCol.rgb+(1-cloudCol.a)*backgroundColor.rgb,cloudCol.a);
 
@@ -836,7 +768,7 @@ void main()
 	//向前/向后散射
 //	float phase = HGScatterMax(dot(viewDirW, lightDir), _ScatterForward, _ScatterForwardIntensity, _ScatterBackward, _ScatterBackwardIntensity);
 //	phase = _ScatterBase + phase * _ScatterMultiply;
-	float	phase = CalculateMultipleScatteringCloudPhases(dot(viewDirW, lightDir),0);
+	float	phase =0;
 			vec2 screenUV = gl_FragCoord.xy/resolution;
 		vec4 blueNoise =  texture(blueNoise, screenUV );
 

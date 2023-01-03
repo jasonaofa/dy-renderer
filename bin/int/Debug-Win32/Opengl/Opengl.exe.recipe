@@ -2,7 +2,7 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\frank\Documents\GitHub\dy-renderer\bin\Debug-Win32\Opengl\Opengl.exe</FullPath>
+      <FullPath>E:\OpenglCloud\dy-renderer\bin\Debug-Win32\Opengl\Opengl.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

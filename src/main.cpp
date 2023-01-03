@@ -46,6 +46,7 @@
 #include "stb_image.h"
 #include "ShaderList.h"
 #include "Clouds.h"
+#include "Languages.h"
 //#include "Core/Log.h"
 
 
@@ -202,9 +203,11 @@ static int cloudsOnFlagClicked = 0;
 static int showWeatherClicked = 0;
 static int weatherMapChannel = 0;
 static int reloadShaderOnFlagClicked = 0;
+static int swapLanguagesClicked = 0;
 bool reloadShaderOnFlag = false;
 
 bool shoWeatherMap = false;
+bool swapLanguages = false;
 
 bool shadowMapFlag = false;
 bool shadowFlag = false;
@@ -220,8 +223,8 @@ float exposure = 1.0f;
 // ---------------------------------*Cloud*---------------------------------
 #define PI 3.1415926535f
 
-float windStrength = 0.0005f;
-glm::vec3 windDirection = glm::vec3(0.35f, 0, 0);
+float windStrength = 0.00026f;
+glm::vec3 windDirection = glm::vec3(0, 0, -10.0f);
 
 // Sun Params
 float sunEnergy = 1.8f;
@@ -232,6 +235,9 @@ glm::vec3 verticalProbParam = glm::vec3(0.0, 0.13, 2.01);
 
 glm::vec4 CloudBaseColor = glm::vec4(0.613f, 0.795f, 1.0f, 1.0f);
 glm::vec4 CloudTopColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+float totalBrightnessFactor = 0.3f;
+float powderTopBrightness = 0.15f;
+
 float precipiFactor = 0.513f;
 float coverageFactor = 0.0f;
 float curlNoiseMultiple = 0.0f;
@@ -262,7 +268,7 @@ LightDirectional light_directional(
 	//position
 	glm::vec3(0, 0, -30.0f),
 	//angle
-	glm::vec3(-26.342f, 18.293f, 0.0f),
+	glm::vec3(-200.0f, 18.0f, 0.0f),
 	//color
 	glm::vec3(1.0f, 1.0f, 1.0f),
 	//intensity
@@ -342,6 +348,8 @@ int main(int argc, char* argv[])
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
+	 // Load Fonts
+	io.Fonts->AddFontFromFileTTF("resources/fonts/msyhl.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
 
 	// Setup Dear ImGui style
@@ -407,10 +415,8 @@ int main(int argc, char* argv[])
 
 	Shader s_cloud("resources/shaders/clouds.vert", "resources/shaders/clouds.frag");
 	s_cloud.use();
-
-
-
 	Clouds::cloudsInit();
+	s_cloud.PassUniformToShader("depthTexture", 3);
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -493,37 +499,11 @@ int main(int argc, char* argv[])
 		glBindFramebuffer(GL_FRAMEBUFFER, viewPortFbo);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//Debug 
-		if (reloadShaderOnFlag)
+
+
+		if(cloudsOnFlag)
 		{
-			// weather
-			int texWidth, texHeight, texChannels;
-			unsigned char* weatherData = stbi_load("resources/textures/Clouds/weather_8.png", &texWidth, &texHeight,
-			                                       &texChannels, 0);
-
-			glGenTextures(1, &Clouds::getWeatherTex());
-			glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, weatherData);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			s_cloud.createNewID();
-			s_cloud.loadShaderFiles();
-			s_cloud.use();
-			s_cloud.PassUniformToShader("depthTexture", 3);
-			s_cloud.PassUniformToShader("baseNoise", 0);
-			s_cloud.PassUniformToShader("detailNoise", 1);
-			//s_cloud.PassUniformToShader("near_plane", nearPlane);
-			//s_cloud.PassUniformToShader("far_plane", farPlane);
-		}
-		reloadShaderOnFlagClicked = 0;
-
-
 		s_cloud.use();
-
 
 		glActiveTexture(GL_TEXTURE2);
 		glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
@@ -532,7 +512,6 @@ int main(int argc, char* argv[])
 		s_cloud.PassUniformToShader("weatherLookup", 2);
 //		glActiveTexture(GL_TEXTURE4);
 //		glBindTexture(GL_TEXTURE_2D, Clouds::getCurlNoiseTex());
-
 
 		s_cloud.PassUniformToShader("curlNoise", 4);
 		glActiveTexture(GL_TEXTURE5);
@@ -584,6 +563,8 @@ int main(int argc, char* argv[])
 		s_cloud.PassUniformToShader("NoiseMax", NoiseMax);
 		s_cloud.PassUniformToShader("anbientIntensity", anbientIntensity);
 		s_cloud.PassUniformToShader("verticalProbParam", verticalProbParam);
+		s_cloud.PassUniformToShader("totalBrightnessFactor", totalBrightnessFactor);
+		s_cloud.PassUniformToShader("powderTopBrightness", powderTopBrightness);
 
 		glActiveTexture(GL_TEXTURE3);
 		glBindTexture(GL_TEXTURE_2D, viewSpaceDepthMap);
@@ -595,6 +576,34 @@ int main(int argc, char* argv[])
 		glEnable(GL_CULL_FACE);
 		glDepthMask(GL_TRUE);
 
+		//Debug 
+		if (reloadShaderOnFlag)
+		{
+			// weather
+			int texWidth, texHeight, texChannels;
+			unsigned char* weatherData = stbi_load("resources/textures/Clouds/weather_8.png", &texWidth, &texHeight,
+				&texChannels, 0);
+
+			glGenTextures(1, &Clouds::getWeatherTex());
+			glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, weatherData);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			s_cloud.createNewID();
+			s_cloud.loadShaderFiles();
+			s_cloud.use();
+			s_cloud.PassUniformToShader("depthTexture", 3);
+			s_cloud.PassUniformToShader("baseNoise", 0);
+			s_cloud.PassUniformToShader("detailNoise", 1);
+			//s_cloud.PassUniformToShader("near_plane", nearPlane);
+			//s_cloud.PassUniformToShader("far_plane", farPlane);
+		}
+		reloadShaderOnFlagClicked = 0;
+		}
 		/////////////////////////////////////////////////////////////////////////////////////
 		///Render Scene
 		/////////////////////////////////////////////////////////////////////////////////////
@@ -791,10 +800,15 @@ void windowResizeCallBack(GLFWwindow* window, int width, int height)
 
 void imguiDock()
 {
+
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
+	// DockSpace
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuiStyle& style = ImGui::GetStyle();
 
 	// Note: Switch this to true to enable dockspace
 	static bool dockspaceOpen = true;
@@ -834,9 +848,8 @@ void imguiDock()
 	if (opt_fullscreen)
 		ImGui::PopStyleVar(2);
 
-	// DockSpace
-	ImGuiIO& io = ImGui::GetIO();
-	ImGuiStyle& style = ImGui::GetStyle();
+
+
 	float minWinSizeX = style.WindowMinSize.x;
 	style.WindowMinSize.x = 370.0f;
 	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -891,9 +904,15 @@ void imguiDock()
 		            ImGui::GetIO().Framerate);
 		/*	auto stats = Renderer2D::GetStats()*/
 		;
-		ImGui::Text("Renderer2D Stats:");
 
-		if (ImGui::Button("EnableShadow"))
+		if (ImGui::Button(u8"切换语言"))
+			swapLanguagesClicked++;
+		swapLanguages = false;
+		if (swapLanguagesClicked & 1) Languages::showChinese();
+		else Languages::showEnglish();
+
+
+		if (ImGui::Button(Languages::enableShadow))
 			shadowFlagClicked++;
 		shadowFlag = false;
 		if (shadowFlagClicked & 1)
@@ -902,7 +921,7 @@ void imguiDock()
 		}
 
 		ImGui::SameLine();
-		if (ImGui::Button("ShowShadowMap"))
+		if (ImGui::Button(Languages::showShadowMap))
 			shadowMapFlagClicked++;
 		shadowMapFlag = false;
 		if (shadowMapFlagClicked & 1)
@@ -910,18 +929,16 @@ void imguiDock()
 			shadowMapFlag = true;
 		}
 
+		ImGui::SliderInt(Languages::spfSize, &m_SPFSize, 1, 12);
+		ImGui::InputFloat(Languages::shadowMapBias, &m_shadowMapBias, 0.0001, 0.001, "%.5");
 
-		ImGui::SliderInt("SPF-Size", &m_SPFSize, 1, 12);
-		ImGui::InputFloat("shadowMapBias", &m_shadowMapBias, 0.0001, 0.001, "%.5");
-
-		ImGui::Text("DirLight:");
-		ImGui::SliderFloat("DirLight Intensity", light_directional.SetIntensity(), 0.0f, 5.0f);
+		ImGui::Text(Languages::globalSettings);
+		ImGui::SliderFloat(Languages::lightIntensity, light_directional.SetIntensity(), 0.0f, 5.0f);
 		// Edit 1 float using a slider from 0.0f to 1.0f
 		//ImGui::ColorEdit3("DirLigh Ccolor", (float*)&light_directional.color);
 		// Edit 3 floats representing a color
-		ImGui::SliderFloat3("LightDirection", (float*)light_directional.SetAngles(), -360, 360);
-		ImGui::InputFloat3("cameraPos", (float*)camera.SetPosition());
-		ImGui::DragFloat3("cameraRotPitch", (float*)camera.SetForward(), 1.0f, 0.0f, 360.0f, "%.2f", 1.0f);
+		ImGui::SliderFloat3(Languages::lightDirection, (float*)light_directional.SetAngles(), -360, 360);
+		ImGui::InputFloat3(Languages::cameraPos, (float*)camera.SetPosition());
 
 		//ImGui::SliderFloat3("LightPosition", (float*)&light_directional.position, -360, 360);
 		ImGui::Spacing();
@@ -932,7 +949,7 @@ void imguiDock()
 		light_directional.UpdateDirection();
 
 		ImGui::SameLine();
-		if (ImGui::Button("CloudsON!"))
+		if (ImGui::Button(Languages::showCloud))
 			cloudsOnFlagClicked++;
 		cloudsOnFlag = false;
 		if (cloudsOnFlagClicked & 1)
@@ -940,19 +957,19 @@ void imguiDock()
 			cloudsOnFlag = true;
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("ShowWeatherMap"))showWeatherClicked++;
+		if (ImGui::Button(Languages::showWeatherMap))showWeatherClicked++;
 		shoWeatherMap = false;
 		if (showWeatherClicked & 1)shoWeatherMap = true;
 		if (shoWeatherMap)
 		{
-			ImGui::RadioButton("Coverage", &weatherMapChannel, 0);
+			ImGui::RadioButton(Languages::coverage, &weatherMapChannel, 0);
 			ImGui::SameLine();
-			ImGui::RadioButton("Precipitation", &weatherMapChannel, 1);
+			ImGui::RadioButton(Languages::precipitation, &weatherMapChannel, 1);
 			ImGui::SameLine();
-			ImGui::RadioButton("CloudType", &weatherMapChannel, 2);
+			ImGui::RadioButton(Languages::cloudType, &weatherMapChannel, 2);
 		}
 		ImGui::SameLine();
-		if (ImGui::Button("Reload Shader&Weather"))
+		if (ImGui::Button(Languages::reload))
 			reloadShaderOnFlagClicked++;
 		reloadShaderOnFlag = false;
 		if (reloadShaderOnFlagClicked & 1)
@@ -960,41 +977,46 @@ void imguiDock()
 			reloadShaderOnFlag = true;
 		}
 
-		ImGui::SliderFloat("windStrength", &windStrength, 0.000f, 0.001f, "%.5f");
-		ImGui::InputFloat3("windDirection", glm::value_ptr(windDirection));
 
-		ImGui::InputFloat("Sun Energy", &sunEnergy, 0.0f, 10.0f);
-		ImGui::SliderFloat("AnbientIntensity", &anbientIntensity, 0.0f, 1.0f);
-		ImGui::DragFloat3 ("verticalProbParam", (float*)&verticalProbParam, 0.01f, 0.0f,5.0f,"%.2f",1.0f);
-		ImGui::ColorEdit3("Sun Color", glm::value_ptr(sunColor));
-		ImGui::ColorEdit3("CloudBaseColor", glm::value_ptr(CloudBaseColor));
-		ImGui::ColorEdit3("CloudTopColor", glm::value_ptr(CloudTopColor));
-		ImGui::SliderFloat("NoiseThreshold", &NoiseThreshold, 0.0f, 1.0f);
-		ImGui::SliderFloat("NoiseMax", &NoiseMax, 0.0f, 1.0f);
-
-		ImGui::Text("Global Clouds Settings");
-		ImGui::InputFloat("CloudVolumeStartHeight", &cloudVolumeStartHeight, 0.0f, 10000.0f);
-		ImGui::InputFloat("CloudVolumeHeight", &cloudVolumeHeight, 0.0f, 10000.0f);
-		ImGui::InputFloat("groundRadius", &groundRadius, 0.0f, 10000.0f);
+		ImGui::Text(Languages::globalCloudsSettings);
+		ImGui::InputFloat(Languages::cloudVolumeStartHeight, &cloudVolumeStartHeight, 0.0f, 10000.0f);
+		ImGui::InputFloat(Languages::cloudVolumeStartHeight, &cloudVolumeHeight, 0.0f, 10000.0f);
+		ImGui::InputFloat(Languages::groundRadius, &groundRadius, 0.0f, 10000.0f);
 
 
-		ImGui::SliderFloat("cloudTopOffset", &cloudTopOffset, -10.0f, 500.0f);
+		ImGui::SliderFloat(Languages::windStrength, &windStrength, 0.000f, 0.001f, "%.5f");
+		ImGui::InputFloat3(Languages::windDirection, glm::value_ptr(windDirection));
 
-		ImGui::InputFloat3("weatherTexMod", glm::value_ptr(weatherTexMod));
-
-		ImGui::Text("Cloud Shape Settings");
-		ImGui::SliderFloat("precipiFactor", &precipiFactor, 0, 5.0f, "%.3f");
-		ImGui::SliderFloat("coverageFactor", &coverageFactor, 0, 1.0f, "%.3f");
+		ImGui::SliderFloat(Languages::turbStrength, &cloudSpeed, 0.0f, 100.0f);
+		ImGui::InputFloat3(Languages::turbDirection, (float*)&detailwindDirection);
 
 
-		ImGui::Text("Cloud Detail Settings");
-		ImGui::SliderFloat("detailScale", &detailScale, 0.0001, 10.0f, "%.4f");
-		ImGui::SliderFloat("curlNoiseMultiple", &curlNoiseMultiple, 0, 10.0f, "%.3f");
+		ImGui::InputFloat3(Languages::weatherTexMod, glm::value_ptr(weatherTexMod));
 
-		ImGui::InputFloat3("detailwindDirection", (float*)&detailwindDirection);
-		ImGui::SliderFloat("Wind Cloud Speed", &cloudSpeed, 0.0f, 100.0f);
+		ImGui::Text(Languages::cloudShapeSettings);
+		ImGui::SliderFloat(Languages::baseNoiseThreshold, &NoiseThreshold, 0.0f, 1.0f);
+		ImGui::SliderFloat(Languages::baseNoiseMax, &NoiseMax, 0.0f, 1.0f);
+
+		ImGui::SliderFloat(Languages::cloudCoverage, &coverageFactor, 0, 1.0f, "%.3f");
+
+		ImGui::SliderFloat(Languages::detailScale, &detailScale, 0.0001, 10.0f, "%.4f");
+		ImGui::SliderFloat(Languages::cloudTopColor, &cloudTopOffset, -10.0f, 500.0f);
+
+		ImGui::SliderFloat(Languages::curlNoiseMultiple, &curlNoiseMultiple, 0, 10.0f, "%.3f");
 
 
+
+		ImGui::Text(Languages::cloudLightingSettings);
+		ImGui::SliderFloat(Languages::precipiFactor, &precipiFactor, 0, 1.0f, "%.3f");
+		ImGui::InputFloat(Languages::sunEnergy, &sunEnergy, 0.0f, 10.0f);
+		ImGui::SliderFloat(Languages::ambientIntensity, &anbientIntensity, 0.0f, 1.0f);
+		ImGui::DragFloat3(Languages::verticalProbParam, (float*)&verticalProbParam, 0.01f, 0.0f, 5.0f, "%.2f", 1.0f);
+		ImGui::DragFloat(Languages::totalBrightnessFactor, &totalBrightnessFactor, 0.01f, 0.0f, 1.0f, "%.2f", 1.0f);
+		ImGui::DragFloat(Languages::powderTopBrightness, &powderTopBrightness, 0.01f, 0.0f, 1.0f, "%.2f", 1.0f);
+
+		ImGui::ColorEdit3(Languages::sunColor, glm::value_ptr(sunColor));
+		ImGui::ColorEdit3(Languages::cloudBaseColor, glm::value_ptr(CloudBaseColor));
+		ImGui::ColorEdit3(Languages::cloudTopColor, glm::value_ptr(CloudTopColor));
 
 		//buffer images
 		int bufferWidth, bufferHight;
@@ -1004,12 +1026,12 @@ void imguiDock()
 		{
 			ImGui::TableNextRow();
 			ImGui::TableNextColumn();
-			ImGui::Text("Weather Texture");
+			ImGui::Text(Languages::weatherTexture);
 			ImGui::Image((void*)Clouds::getWeatherTex(), ImVec2(bufferWidth, bufferHight));
 
 
 			ImGui::TableNextColumn();
-			ImGui::Text("CurlNoiseTex");
+			ImGui::Text(Languages::curlNoiseTex);
 			ImGui::Image((void*)(intptr_t)Clouds::getCurlNoiseTex(), ImVec2(bufferWidth, bufferHight));
 
 			ImGui::EndTable();
@@ -1042,3 +1064,4 @@ void imguiDock()
 
 	ImGui::End();
 }
+

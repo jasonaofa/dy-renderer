@@ -107,6 +107,9 @@
     <ClInclude Include="src\CoreUtils.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="src\Languages.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\back.png">

@@ -188,6 +188,7 @@
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Fbo.h" />
     <ClInclude Include="src\FrameBuffer.h" />
+    <ClInclude Include="src\Languages.h" />
     <ClInclude Include="src\LightDirectional.h" />
     <ClInclude Include="src\LightPoint.h" />
     <ClInclude Include="src\LightSpot.h" />

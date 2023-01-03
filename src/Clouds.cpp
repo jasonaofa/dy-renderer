@@ -96,7 +96,7 @@ void Clouds::cloudsInit()
 	glTexImage3D(GL_TEXTURE_3D, 0, GL_RGBA, texHeight, texHeight, texHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, texData);
 
 	// weather 
-	unsigned char* weatherData = stbi_load("resources/textures/Clouds/weather_2.png", &texWidth, &texHeight,
+	unsigned char* weatherData = stbi_load("resources/textures/Clouds/weather_8.png", &texWidth, &texHeight,
 		&texChannels, 0);
 
 	glGenTextures(1, &m_weatherTex);
