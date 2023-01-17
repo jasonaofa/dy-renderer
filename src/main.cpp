@@ -222,8 +222,9 @@ float exposure = 1.0f;
 
 // ---------------------------------*Cloud*---------------------------------
 #define PI 3.1415926535f
-
+int frame = 1;
 float windStrength = 0.00026f;
+float cloudSmoothness = 1.0f;
 glm::vec3 windDirection = glm::vec3(0, 0, -10.0f);
 
 // Sun Params
@@ -348,9 +349,9 @@ int main(int argc, char* argv[])
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable; // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
-	 // Load Fonts
-	io.Fonts->AddFontFromFileTTF("resources/fonts/msyhl.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-
+	// Load Fonts
+	io.Fonts->AddFontFromFileTTF("resources/fonts/msyhl.ttf", 18.0f, NULL,
+	                             io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -416,7 +417,7 @@ int main(int argc, char* argv[])
 	Shader s_cloud("resources/shaders/clouds.vert", "resources/shaders/clouds.frag");
 	s_cloud.use();
 	Clouds::cloudsInit();
-	s_cloud.PassUniformToShader("depthTexture", 3);
+
 
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -441,7 +442,6 @@ int main(int argc, char* argv[])
 	// #################################*渲染循环*######################################
 	while (!glfwWindowShouldClose(window))
 	{
-
 		processInput(window);; // ---------------------------------*MVP矩阵*---------------------------------
 		//赋值
 		view = camera.GetViewMatrix();
@@ -500,135 +500,148 @@ int main(int argc, char* argv[])
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-
-		if(cloudsOnFlag)
+		if (cloudsOnFlag)
 		{
-		s_cloud.use();
+			//Frame
+			frame++;
+			if (frame == 16) frame = 0;
+			std::cout<<frame<< std::endl;
 
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
-		glActiveTexture(GL_TEXTURE0);
-
-		s_cloud.PassUniformToShader("weatherLookup", 2);
-//		glActiveTexture(GL_TEXTURE4);
-//		glBindTexture(GL_TEXTURE_2D, Clouds::getCurlNoiseTex());
-
-		s_cloud.PassUniformToShader("curlNoise", 4);
-		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_2D, Clouds::getBlueNoiseTex());
-			glActiveTexture(GL_TEXTURE0);
-		s_cloud.PassUniformToShader("blueNoise", 5);
-		//glm::mat4 v = glm::mat4(glm::mat3(camera.GetViewMatrix()));
-
-
-		//added parameters
-		//////////////////////////////////////////
-
-
-		s_cloud.PassUniformToShader("projection", projection);
-		s_cloud.PassUniformToShader("m", modelMat);
-		s_cloud.PassUniformToShader("time", (GLfloat)glfwGetTime());
-		s_cloud.PassUniformToShader("view", view);
-		s_cloud.PassUniformToShader("projection", projection);
-		s_cloud.PassUniformToShader("lightDir", light_directional.GetDirection());
-		s_cloud.PassUniformToShader("camPos", camera.GetPosition());
-		s_cloud.PassUniformToShader("shoWeatherMap", shoWeatherMap);
-		s_cloud.PassUniformToShader("weatherMapChannel", weatherMapChannel);
-
-
-		s_cloud.PassUniformToShader("sunEnergy", sunEnergy);
-
-		s_cloud.PassUniformToShader("resolution", glm::vec2(Fbo::GetScreenWidth(), Fbo::GetScreenHeight()));
-		s_cloud.PassUniformToShader("cloudVolumeStartHeight", cloudVolumeStartHeight);
-		s_cloud.PassUniformToShader("cloudVolumeHeight", cloudVolumeHeight);
-
-		s_cloud.PassUniformToShader("groundRadius", groundRadius);
-		s_cloud.PassUniformToShader("windDirection", windDirection);
-		s_cloud.PassUniformToShader("windStrength", windStrength);
-
-		s_cloud.PassUniformToShader("precipiFactor", precipiFactor);
-		s_cloud.PassUniformToShader("coverageFactor", coverageFactor);
-		s_cloud.PassUniformToShader("curlNoiseMultiple", curlNoiseMultiple);
-
-		s_cloud.PassUniformToShader("cloudTopOffset", cloudTopOffset);
-
-		s_cloud.PassUniformToShader("weatherTexMod", weatherTexMod);
-		s_cloud.PassUniformToShader("detailScale", detailScale);
-		s_cloud.PassUniformToShader("detailwindDirection", detailwindDirection);
-		s_cloud.PassUniformToShader("cloudSpeed", cloudSpeed);
-		s_cloud.PassUniformToShader("sunColor", sunColor);
-		s_cloud.PassUniformToShader("CloudBaseColor", CloudBaseColor);
-		s_cloud.PassUniformToShader("CloudTopColor", CloudTopColor);
-		s_cloud.PassUniformToShader("NoiseThreshold", NoiseThreshold);
-		s_cloud.PassUniformToShader("NoiseMax", NoiseMax);
-		s_cloud.PassUniformToShader("anbientIntensity", anbientIntensity);
-		s_cloud.PassUniformToShader("verticalProbParam", verticalProbParam);
-		s_cloud.PassUniformToShader("totalBrightnessFactor", totalBrightnessFactor);
-		s_cloud.PassUniformToShader("powderTopBrightness", powderTopBrightness);
-
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, viewSpaceDepthMap);
-		glDepthMask(GL_FALSE);
-		glDisable(GL_CULL_FACE);
-		//glBindVertexArray(Clouds::m_quadVAO);
-		glBindVertexArray(Clouds::getCloudVAO());
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glEnable(GL_CULL_FACE);
-		glDepthMask(GL_TRUE);
-
-		//Debug 
-		if (reloadShaderOnFlag)
-		{
-			// weather
-			int texWidth, texHeight, texChannels;
-			unsigned char* weatherData = stbi_load("resources/textures/Clouds/weather_8.png", &texWidth, &texHeight,
-				&texChannels, 0);
-
-			glGenTextures(1, &Clouds::getWeatherTex());
-			glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, weatherData);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			s_cloud.createNewID();
-			s_cloud.loadShaderFiles();
 			s_cloud.use();
-			s_cloud.PassUniformToShader("depthTexture", 3);
-			s_cloud.PassUniformToShader("baseNoise", 0);
-			s_cloud.PassUniformToShader("detailNoise", 1);
-			//s_cloud.PassUniformToShader("near_plane", nearPlane);
-			//s_cloud.PassUniformToShader("far_plane", farPlane);
+
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
+			glActiveTexture(GL_TEXTURE0);
+
+			glActiveTexture(GL_TEXTURE6);
+			glBindTexture(GL_TEXTURE_2D, viewPortTexture);
+			glActiveTexture(GL_TEXTURE0);
+			s_cloud.PassUniformToShader("lastFrame", 6);
+
+			s_cloud.PassUniformToShader("weatherLookup", 2);
+			//		glActiveTexture(GL_TEXTURE4);
+			//		glBindTexture(GL_TEXTURE_2D, Clouds::getCurlNoiseTex());
+
+			s_cloud.PassUniformToShader("curlNoise", 4);
+			glActiveTexture(GL_TEXTURE5);
+			glBindTexture(GL_TEXTURE_2D, Clouds::getBlueNoiseTex());
+			glActiveTexture(GL_TEXTURE0);
+			s_cloud.PassUniformToShader("blueNoise", 5);
+			//glm::mat4 v = glm::mat4(glm::mat3(camera.GetViewMatrix()));
+
+
+			//added parameters
+			//////////////////////////////////////////
+
+
+			s_cloud.PassUniformToShader("projection", projection);
+			s_cloud.PassUniformToShader("m", modelMat);
+			s_cloud.PassUniformToShader("time", (GLfloat)glfwGetTime());
+			s_cloud.PassUniformToShader("view", view);
+			s_cloud.PassUniformToShader("projection", projection);
+			s_cloud.PassUniformToShader("lightDir", light_directional.GetDirection());
+			s_cloud.PassUniformToShader("camPos", camera.GetPosition());
+			s_cloud.PassUniformToShader("shoWeatherMap", shoWeatherMap);
+			s_cloud.PassUniformToShader("weatherMapChannel", weatherMapChannel);
+
+
+			s_cloud.PassUniformToShader("sunEnergy", sunEnergy);
+
+			s_cloud.PassUniformToShader("resolution", glm::vec2(Fbo::GetScreenWidth(), Fbo::GetScreenHeight()));
+			s_cloud.PassUniformToShader("cloudVolumeStartHeight", cloudVolumeStartHeight);
+			s_cloud.PassUniformToShader("cloudVolumeHeight", cloudVolumeHeight);
+
+			s_cloud.PassUniformToShader("groundRadius", groundRadius);
+			s_cloud.PassUniformToShader("windDirection", windDirection);
+			s_cloud.PassUniformToShader("windStrength", windStrength);
+
+			s_cloud.PassUniformToShader("precipiFactor", precipiFactor);
+			s_cloud.PassUniformToShader("coverageFactor", coverageFactor);
+			s_cloud.PassUniformToShader("curlNoiseMultiple", curlNoiseMultiple);
+
+			s_cloud.PassUniformToShader("cloudTopOffset", cloudTopOffset);
+
+			s_cloud.PassUniformToShader("weatherTexMod", weatherTexMod);
+			s_cloud.PassUniformToShader("detailScale", detailScale);
+			s_cloud.PassUniformToShader("detailwindDirection", detailwindDirection);
+			s_cloud.PassUniformToShader("cloudSpeed", cloudSpeed);
+			s_cloud.PassUniformToShader("sunColor", sunColor);
+			s_cloud.PassUniformToShader("CloudBaseColor", CloudBaseColor);
+			s_cloud.PassUniformToShader("CloudTopColor", CloudTopColor);
+			s_cloud.PassUniformToShader("NoiseThreshold", NoiseThreshold);
+			s_cloud.PassUniformToShader("NoiseMax", NoiseMax);
+			s_cloud.PassUniformToShader("anbientIntensity", anbientIntensity);
+			s_cloud.PassUniformToShader("verticalProbParam", verticalProbParam);
+			s_cloud.PassUniformToShader("totalBrightnessFactor", totalBrightnessFactor);
+			s_cloud.PassUniformToShader("powderTopBrightness", powderTopBrightness);
+			s_cloud.PassUniformToShader("cloudSmoothness", cloudSmoothness);
+			s_cloud.PassUniformToShader("frame", frame);
+
+			glActiveTexture(GL_TEXTURE3);
+			glBindTexture(GL_TEXTURE_2D, viewSpaceDepthMap);
+			glDepthMask(GL_FALSE);
+			glDisable(GL_CULL_FACE);
+			//glBindVertexArray(Clouds::m_quadVAO);
+			glBindVertexArray(Clouds::getCloudVAO());
+			glDrawArrays(GL_TRIANGLES, 0, 36);
+			glEnable(GL_CULL_FACE);
+			glDepthMask(GL_TRUE);
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			//Debug 
+			if (reloadShaderOnFlag)
+			{
+				// weather
+				int texWidth, texHeight, texChannels;
+				unsigned char* weatherData = stbi_load("resources/textures/Clouds/weather_8.png", &texWidth, &texHeight,
+				                                       &texChannels, 0);
+
+				glGenTextures(1, &Clouds::getWeatherTex());
+				glBindTexture(GL_TEXTURE_2D, Clouds::getWeatherTex());
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 256, 256, 0, GL_RGB, GL_UNSIGNED_BYTE, weatherData);
+				glBindTexture(GL_TEXTURE_2D, 0);
+
+				s_cloud.createNewID();
+				s_cloud.loadShaderFiles();
+				s_cloud.use();
+				s_cloud.PassUniformToShader("depthTexture", 3);
+				s_cloud.PassUniformToShader("baseNoise", 0);
+				s_cloud.PassUniformToShader("detailNoise", 1);
+				//s_cloud.PassUniformToShader("near_plane", nearPlane);
+				//s_cloud.PassUniformToShader("far_plane", farPlane);
+			}
+			reloadShaderOnFlagClicked = 0;
 		}
-		reloadShaderOnFlagClicked = 0;
-		}
-		/////////////////////////////////////////////////////////////////////////////////////
-		///Render Scene
-		/////////////////////////////////////////////////////////////////////////////////////
-		m_shaderList.s_standard->use();
-		m_shaderList.s_standard->PassUniformToShader("ao", ao);
+		///////////////////////////////////////////////////////////////////////////////////////
+		/////Render Scene
+		///////////////////////////////////////////////////////////////////////////////////////
 
-		m_shaderList.s_standard->PassUniformToShader("view", view);
-		m_shaderList.s_standard->PassUniformToShader("projection", projection);
-		m_shaderList.s_standard->PassUniformToShader("camPos", camera.GetPosition());
+		//m_shaderList.s_standard->use();
+		//m_shaderList.s_standard->PassUniformToShader("ao", ao);
+
+		//m_shaderList.s_standard->PassUniformToShader("view", view);
+		//m_shaderList.s_standard->PassUniformToShader("projection", projection);
+		//m_shaderList.s_standard->PassUniformToShader("camPos", camera.GetPosition());
 
 
-		m_shaderList.s_standard->PassUniformToShader("model", modelMat);
-		m_shaderList.s_standard->PassUniformToShader("lightDir", light_directional.GetDirection());
-		m_shaderList.s_standard->PassUniformToShader("lightColor", light_directional.GetColor());
-		m_shaderList.s_standard->PassUniformToShader("lightIntensity", light_directional.GetIntensity());
-		m_shaderList.s_standard->PassUniformToShader("SPFSize", m_SPFSize);
-		m_shaderList.s_standard->PassUniformToShader("shadowMapBias", m_shadowMapBias);
+		//m_shaderList.s_standard->PassUniformToShader("model", modelMat);
+		//m_shaderList.s_standard->PassUniformToShader("lightDir", light_directional.GetDirection());
+		//m_shaderList.s_standard->PassUniformToShader("lightColor", light_directional.GetColor());
+		//m_shaderList.s_standard->PassUniformToShader("lightIntensity", light_directional.GetIntensity());
+		//m_shaderList.s_standard->PassUniformToShader("SPFSize", m_SPFSize);
+		//m_shaderList.s_standard->PassUniformToShader("shadowMapBias", m_shadowMapBias);
 
-		glActiveTexture(GL_TEXTURE9);
-		glBindTexture(GL_TEXTURE_2D, shadowMap);
+		//glActiveTexture(GL_TEXTURE9);
+		//glBindTexture(GL_TEXTURE_2D, shadowMap);
 
-		m_scene.Draw(m_shaderList.s_standard);
+		//m_scene.Draw(m_shaderList.s_standard);
 
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
 		//drawSkyBos
@@ -636,17 +649,17 @@ int main(int argc, char* argv[])
 		/////////////////////////////////////////////////////////////////////////////////////
 		///Get camera space depth Texture
 		/////////////////////////////////////////////////////////////////////////////////////
-		simpleDepthShader->use();
-		simpleDepthShader->PassUniformToShader("p", projection);
-		simpleDepthShader->PassUniformToShader("m", modelMat);
-		simpleDepthShader->PassUniformToShader("v", view);
+		//simpleDepthShader->use();
+		//simpleDepthShader->PassUniformToShader("p", projection);
+		//simpleDepthShader->PassUniformToShader("m", modelMat);
+		//simpleDepthShader->PassUniformToShader("v", view);
 		//把视口改成深度图需要的分辨率，准备开始画深度图
 		//glViewport(0, 0, Fbo::GetScreenWidth(), Fbo::GetScreenHeight());
 		//把shadowMapFBO绑到当前的Framebuffer并激活;
 		glBindFramebuffer(GL_FRAMEBUFFER, viewSpaceDepthMapFBO);
 		glClear(GL_DEPTH_BUFFER_BIT);
-		//用simpleDepthShader画出场景
-		m_scene.Draw(simpleDepthShader);
+		////用simpleDepthShader画出场景
+		//m_scene.Draw(simpleDepthShader);
 		//m_scene.Draw(m_shaderList.s_standard);
 		//解绑Framebuffer
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -671,6 +684,7 @@ int main(int argc, char* argv[])
 
 
 		//}
+
 
 		// ---------------------------------*ImGUI*---------------------------------
 		imguiDock();
@@ -800,11 +814,10 @@ void windowResizeCallBack(GLFWwindow* window, int width, int height)
 
 void imguiDock()
 {
-
-
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
+
 
 	// DockSpace
 	ImGuiIO& io = ImGui::GetIO();
@@ -847,7 +860,6 @@ void imguiDock()
 
 	if (opt_fullscreen)
 		ImGui::PopStyleVar(2);
-
 
 
 	float minWinSizeX = style.WindowMinSize.x;
@@ -938,7 +950,8 @@ void imguiDock()
 		//ImGui::ColorEdit3("DirLigh Ccolor", (float*)&light_directional.color);
 		// Edit 3 floats representing a color
 		ImGui::SliderFloat3(Languages::lightDirection, (float*)light_directional.SetAngles(), -360, 360);
-		ImGui::DragFloat3(Languages::cameraPos, (float*)camera.SetPosition() ,100.0f, 0.0f, 100000.0f, "%.2f", 1.0f);
+		ImGui::DragFloat3(Languages::cameraPos, (float*)camera.SetPosition(), 100.0f, 0.0f, 100000.0f, "%.2f", 1.0f);
+		ImGui::DragFloat3("pitchYaw", (float*)camera.SetForward(), 1, 0.0f, 360, "%.2f", 1.0f);
 
 		//ImGui::SliderFloat3("LightPosition", (float*)&light_directional.position, -360, 360);
 		ImGui::Spacing();
@@ -1003,7 +1016,7 @@ void imguiDock()
 		ImGui::SliderFloat(Languages::cloudTopColor, &cloudTopOffset, -10.0f, 500.0f);
 
 		ImGui::SliderFloat(Languages::curlNoiseMultiple, &curlNoiseMultiple, 0, 10.0f, "%.3f");
-
+		ImGui::DragFloat(Languages::cloudSmoothness, &cloudSmoothness, 0.01f, 0.0f, 2.0f, "%.2f", 1.0f);
 
 
 		ImGui::Text(Languages::cloudLightingSettings);
@@ -1060,8 +1073,13 @@ void imguiDock()
 	             ImVec2{0, 1}, ImVec2{1, 0});
 
 	ImGui::End();
+
+	ImGui::Begin("test");
+	ImGui::Image(ImTextureID(viewPortTexture), ImVec2(500, 500));
+
+	ImGui::End();
+
 	ImGui::PopStyleVar();
 
 	ImGui::End();
 }
-

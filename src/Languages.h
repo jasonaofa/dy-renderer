@@ -39,6 +39,7 @@ public:
 		detailScale = u8"细节贴图的缩放";
 		cloudTopOffset = u8"顶部偏移";
 		curlNoiseMultiple = u8"卷曲贴图的缩放";
+		cloudSmoothness = u8"云层整体平滑度";
 
 		cloudLightingSettings = u8"云层着色参数";
 		precipiFactor = u8"降雨概率";
@@ -92,6 +93,7 @@ public:
 		detailScale = "detailScale";
 		cloudTopOffset = "cloudTopOffset";
 		curlNoiseMultiple = "curlNoiseMultiple";
+		cloudSmoothness = "cloudSmoothness";
 
 		cloudLightingSettings = "Cloud Lighting Settings";
 		precipiFactor = "precipiFactor";
@@ -106,6 +108,7 @@ public:
 
 		weatherTexture = "weatherTexture";
 		curlNoiseTex = "curlNoiseTex";
+
 
 
 
@@ -143,6 +146,7 @@ public:
 	static inline const char *detailScale;
 	static inline const char *cloudTopOffset;
 	static inline const char *curlNoiseMultiple;
+	static inline const char *cloudSmoothness;
 
 	static inline const char *cloudLightingSettings;
 	static inline const char *precipiFactor;

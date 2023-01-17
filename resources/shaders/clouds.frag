@@ -1,6 +1,8 @@
 ﻿#version 330 core
 out vec4 FragColor;
 in vec3 posW;
+in vec2 TexCoord;
+uniform int frame;
 
 uniform float time;
 uniform mat4 view; // inverse view-projection matrix
@@ -26,6 +28,7 @@ uniform vec4 CloudBaseColor = vec4(0.3843,0.47,0.525,1);
 uniform vec4 CloudTopColor = vec4(0.212,0.267,0.298,1);
 uniform	vec3 verticalProbParam = vec3(0,0,0);
 
+uniform float cloudSmoothness;
 uniform float cloudSpeed;
 uniform float cloudTopOffset;
 uniform float totalBrightnessFactor;
@@ -52,6 +55,9 @@ uniform sampler2D weatherLookup;
 uniform sampler2D depthTexture;
 uniform sampler2D curlNoise;
 uniform sampler2D blueNoise;
+
+
+uniform sampler2D lastFrame;
 
 vec4 vec4Zero =vec4 (0,0,0,0);
 vec3 vec3Zero =vec3 (0,0,0);
@@ -82,11 +88,6 @@ uint SAMPLE_RANGE_Y = 128u;
 vec4 STRATUS_GRADIENT = vec4(0.02f, 0.05f, 0.09f, 0.11f);//层云
 vec4 STRATOCUMULUS_GRADIENT = vec4(0.02f, 0.2f, 0.48f, 0.625f);//层积云
 vec4 CUMULUS_GRADIENT = vec4(0.01f, 0.0625f, 0.78f, 1.0f); //积云 these fractions would need to be altered if cumulonimbus are added to the same pass
-
-//vec3 STRATUS_GRADIENT = vec4(0.02f, 0.05f, 0.09f, 0.11f);//层云
-//vec3 STRATOCUMULUS_GRADIENT = vec4(0.02f, 0.2f, 0.48f, 0.625f);//层积云
-//vec3 CUMULUS_GRADIENT = vec4(0.01f, 0.0625f, 0.78f, 1.0f); //积云 these fractions would need to be altered if cumulonimbus are added to the same pass
-
 
 // random vectors on the unit sphere
   vec3 RANDOM_VECTORS[] = vec3[]
@@ -269,9 +270,6 @@ float GetDensityHeightGradientForPoint(float heightFraction, float weatherData)
 	float stratocumulus = 1.0f - abs(weatherData - 0.5f) * 2.0f;//cloudType==0,1，stratocumulus==0,cloudType==0.5，stratocumulus==1
 	float stratus = 1.0f - saturate(weatherData * 2.0f);//cloudType==0，stratus==1/cloudType==1，stratus==0
 
-//	float cumulusRemap =saturate(remap(heightFraction, 0.08, 0.13, 0.1, 1.0)) * saturate(remap(heightFraction, 0.35, 0.85, 1.0,0.0));
-//	float stratocumulusRemap = saturate(remap(heightFraction, 0.13, 0.23, 0.0, 1.0)) * saturate(remap(heightFraction, 0.1, 0.5, 1.0,0.0));
-//	float stratusRemap =  saturate(remap(heightFraction, 0.13, 0.23, 0.0, 1.0)) * saturate(remap(heightFraction, 0.2, 0.3 ,1.0,0.0));
 	float cumulusRemap =saturate(remap(heightFraction, 0.0, 0.13, 0.1, 1.0)) * saturate(remap(heightFraction, 0.35, 0.85, 1.0,0.0));
 	float stratocumulusRemap = saturate(remap(heightFraction, 0.13, 0.23, 0.0, 1.0)) * saturate(remap(heightFraction, 0.1, 0.5, 1.0,0.0));
 	//													buttom thickness										Top thickness
@@ -319,9 +317,9 @@ float sampleCloudDensity(vec3 pos, vec3 weatherData,float heightFrac,bool doChea
 {
 	const float baseFreq = 1e-5;
 	pos += heightFrac * windDirection * cloudTopOffset;
-	//pos += windDirection * cloudSpeed * time; 
-	//TODO ADD A PARAMETERS HERE ↓
-	pos *= CLOUD_SCALE*     1.0;
+	pos += windDirection * cloudSpeed * time; 
+
+	pos *= CLOUD_SCALE * cloudSmoothness;
 
 	//pos *=  baseFreq * 0.1f;
 	vec4 lowFreqNoise = texture(baseNoise,  pos);
@@ -379,19 +377,13 @@ float sampleCloudDensity(vec3 pos, vec3 weatherData,float heightFrac,bool doChea
 	//return density;
 	if (!doCheaply)
 	{
-	vec2 curlNoise = texture(curlNoise,pos.xy).rg;
-	 pos += vec3(curlNoise.xy * (1.0f - heightFrac)*curlNoiseMultiple,0.0);
-
-	//vec3 highFreqNoise = texture(detailNoise, detailScale * (pos + detailwindDirection * cloudSpeed * time)).rgb;
-	// vec3 highFreqNoise = texture(detailNoise, pos  * detailScale).rgb;
+	//vec2 curlNoise = texture(curlNoise,pos.xy).rg;
+	// pos += vec3(curlNoise.xy * (1.0f - heightFrac)*curlNoiseMultiple,0.0);
+	//float heightFraction  = GetHeightFractionForPoint(pos);
 	 vec3 highFreqNoise = texture(detailNoise, detailScale*pos+detailwindDirection * cloudSpeed * time).rgb;
 
-	    // build High frequency Worley noise fBm
-    float high_freq_fBm = ( highFreqNoise.r * 0.625 ) + ( highFreqNoise.g * 0.25 ) + ( highFreqNoise.b * 0.125 );
 
-    // get the height_fraction for use with blending noise types over height
-    float heightFraction  = GetHeightFractionForPoint(pos);
-		
+    float high_freq_fBm = ( highFreqNoise.r * 0.625 ) + ( highFreqNoise.g * 0.25 ) + ( highFreqNoise.b * 0.125 );
 
     float high_freq_noise_modifier = lerp(high_freq_fBm, 1.0 - high_freq_fBm, saturate(heightFrac * 10.0));
 
@@ -402,7 +394,6 @@ float sampleCloudDensity(vec3 pos, vec3 weatherData,float heightFrac,bool doChea
 
 	return density;
 }
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -525,10 +516,7 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 	float silver_intensity = 18;
 	float silver_spread =     0.9;
 	float Energy = max(HG(lightDotEye, eccentricity), silver_intensity* HG(lightDotEye, 0.99-silver_spread));
-	//return Energy;
-	float sun_highlight = InOutScatter(lightDotEye,5.5f,10f,0.5f);
-	
-	
+
 	//////////////////////////////
 	//AMBIENT
 	//////////////////////////////
@@ -543,19 +531,8 @@ vec4 getLightEnergy(float lightDotEye,float densityToSun,float cloudDensity,floa
 }
 
 
-
-
-
-
-
-// TODO get from cb values - has to change as time of day changes
 vec3 ambientLight(float heightFrac)
 {
-//	vec3 tempVec3 = vec3Zero;
-//	tempVec3.x=lerp(0.5f,1.0f,heightFrac);
-//	tempVec3.y=lerp(0.67f,1.0f,heightFrac);
-//	tempVec3.z=lerp(0.82f,1.0f,heightFrac);
-//	return tempVec3;
 	return lerpVec3(vec3(0.5f, 0.67f, 0.82f),vec3(1.0f, 1.0f, 1.0f),heightFrac);
 }
 
@@ -607,13 +584,6 @@ vec4 sampleClouddensityToSun(
 
 	}
 
-
-//					float hg = HG(lightDotEye, 0.7);
-//
-//				float extinct = Beer(densityToSun);
-//
-//				return  vec4(extinct * hg);
-
 		return (getLightEnergy(lightDotEye,densityToSun,cloudDensity, 
 		lerp(1.0f, 2.0f, getPrecipitation(weatherData)),
 		GetHeightFractionForPoint(startPos),stepSize,
@@ -637,6 +607,7 @@ vec4 traceClouds(
 
 	//between 64,128
 	float sampleCount = lerp(SAMPLE_RANGE_X, SAMPLE_RANGE_Y, saturate(((thickness - cloudVolumeHeight) / cloudVolumeHeight)));//采样的次数
+	//sampleCount = 64;//采样的次数
 	float stepSize = thickness / float(sampleCount);//thickness/采样的次数 = the distance per step
 
 	dir /= thickness;//normalize向量归一化
@@ -657,8 +628,6 @@ vec4 traceClouds(
 	float opticalDepth = 0.0;
 	vec4 color;
 
-	vec3 accumLightDensity;
-	vec3 ambientBadApprox;
 	//for(uint i = 0u; i < sampleCount; ++i)
 	//for(uint i = 0u; i < floor(sampleCount); ++i)
 	for(uint i = 0u; i <sampleCount; ++i)
@@ -666,7 +635,6 @@ vec4 traceClouds(
 	//first,get cloud's density from sampleCloudDensity funciton,clouds's density mean the thickness of the cloud
 		float heightFrac = GetHeightFractionForPoint(pos);
 
-		//if (extinct < 0.01 || heightFrac > 1.0 || heightFrac < 0.0) break;
 		weatherData = sampleWeather(pos);
 		float cloudDensity = sampleCloudDensity(
 			pos,
@@ -692,9 +660,9 @@ vec4 traceClouds(
 
 			
 
-			vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
-			// vec4 source = vec4((sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/, cloudDensity * transmittance); 
-			
+			vec4 source = vec4(
+			(sunColor.rgb * lightDensity.rgb +ambientLight*anbientIntensity*AmbientColor(heightFrac))/*+ ambientLight(heightFrac)*/
+			, cloudDensity * transmittance); 			
 			
 			source.rgb *= source.a;
 			result += (1.0f - result.a) * source;
@@ -706,13 +674,13 @@ vec4 traceClouds(
 		//pos += posStep+(blueNoise.xyz-0.5)*2;
 	}
 
-	float fadRange = 0.5f;
+	float fadRange =0.5;
 	float fadIntensity = 1.5e-5;
-	float wetness = 0;
-	float fading = exp(-max( length(pos)*fadRange + (4e3 * wetness - 6e3), 0.0 ) * fadIntensity)*1.5;
+	float wetness = 1;
+	float fading = (exp(-max( length(pos)*fadRange + (4e3 * wetness - 6e3), 0.0 ) * fadIntensity));
 
 	//float cloudTransmittanceFaded = mix(1.0, transmittance, fading);
-	//result*=fading;
+	//result*=fading*transmittance;
 
 	//return result;
 
@@ -738,13 +706,67 @@ vec4 traceClouds(
 
 }
 
-
+//获取索引， 给定一个uv， 纹理宽度高度，以及要分帧的次数，返回当前uv所对应的迭代索引
+int GetIndex(vec2 uv, vec2 resolution, int iterationCount)
+{
+float a[2] = float[2](1,2);
+    //分帧渲染时的顺序索引
+    int FrameOrder_2x2[] = int[](0, 2, 3, 1);
+    int FrameOrder_4x4[] = int[](
+        0, 8, 2, 10,
+        12, 4, 14, 6,
+        3, 11, 1, 9,
+        15, 7, 13, 5
+    );
+    
+    int x = int(floor(mod(uv.x * resolution.x / 8 , iterationCount)));
+    int y = int(floor(mod(uv.y * resolution.y / 8, iterationCount)));
+    int index = x + y * iterationCount;
+    
+    if (iterationCount == 2)
+    {
+        index = FrameOrder_2x2[index];
+    }
+    if(iterationCount == 4)
+    {
+        index = FrameOrder_4x4[index];
+    }
+    return index;
+}
     ////////////////////////////////////////////////////////////////////
 
 
 
 void main() 
 {
+
+
+	//FragColor = vec4(gl_FragCoord.xy/8/4,0,0);return;
+
+   ivec2 block = ivec2(gl_FragCoord.xy / 4);
+   ivec2 offset = ivec2(gl_FragCoord.xy - block * 4);
+   int index = offset.x + offset.y * 4;
+   	vec2 uv = 2.0 * gl_FragCoord.xy / resolution - 1.0;
+
+				vec2 screenUV = gl_FragCoord.xy/resolution;
+	//FragColor = vec4(group_index,0,0,0) ;return;
+
+	//FragColor=texture(lastFrame,screenUV);return;
+
+//	ivec2 pixel = ivec2(gl_FragCoord.xy);
+//    ivec2 block = ivec2(pixel / 8);
+//    ivec2 group = ivec2(block / 4);
+//	  int group_index = group.x + group.y * 4;
+//	   if (group_index ==2) {return;}
+
+    // if (index!=frame){FragColor=texture(lastFrame,uv);return;}
+     if (false){}
+
+	else
+	{
+
+
+	//FragColor = vec4(TexCoord*4 ,0,0);return;
 
 	float zwDepth = texture(depthTexture,gl_FragCoord.xy).r;
 
@@ -754,7 +776,7 @@ void main()
 	bool depthPresent = zwDepth < 1.0f;//这里的深度应该用没有被线性处理过的深度
 	float depth =LinearizeDepth(zwDepth);
 	// Get clip space position
-	vec2 uv = 2.0 * gl_FragCoord.xy / resolution - 1.0;
+
 	vec4 clipPos = vec4(uv.xy, 1.0, 1.0); // z=1.0 ist the near plane
 	vec3 viewDirW = normalize((inverse(view) * vec4((inverse(projection) * clipPos).xyz, 0.0)).xyz);
 
@@ -769,7 +791,7 @@ void main()
 //	float phase = HGScatterMax(dot(viewDirW, lightDir), _ScatterForward, _ScatterForwardIntensity, _ScatterBackward, _ScatterBackwardIntensity);
 //	phase = _ScatterBase + phase * _ScatterMultiply;
 	float	phase =0;
-			vec2 screenUV = gl_FragCoord.xy/resolution;
+
 		vec4 blueNoise =  texture(blueNoise, screenUV );
 
 	//FragColor =vec4(depth);return;
@@ -858,6 +880,8 @@ void main()
 	//相机在这（云层顶部之上）
 	//////////////////////  <-------云层顶部
 
+
+
 	//////////////////////  <-------云层底部
 	else if(eyeRadius > PLANET_CENTER_TO_UPPER_CLOUD_RADIUS) // over outer shell 
 	{
@@ -907,4 +931,13 @@ void main()
 			return;
 	}
 
+
+
+
+
+
+
+	}
+//	else  discard;return;
+   
 }

@@ -9,10 +9,11 @@ uniform mat4 v;
 out vec3 posW;
 out float viewDepth;
 
-
+out vec2 TexCoord;
 
 void main()
 {
+	TexCoord = (aPos.xy + 1.0) * 0.5;
    // WorldPos = vec3(m * vec4(aPos, 1.0));
  
     //gl_Position =  p * v * vec4(aPos, 1.0);
